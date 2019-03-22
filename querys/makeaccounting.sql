@@ -66,13 +66,16 @@ CREATE TABLE Purchases(
 	UnitCost MONEY,
 	purchase_date DATE
 );
+
+
 /*To test*/
 
 
 CREATE TABLE Transactions (
 	id_transact INTEGER PRIMARY KEY IDENTITY(1,1),
 	descr NVARCHAR(70),
-	transact_date DATE
+	transact_date DATE,
+	total_amount MONEY
 );
 
 CREATE TABLE Transact_details(
@@ -80,4 +83,18 @@ CREATE TABLE Transact_details(
 	id_accounts INTEGER FOREIGN KEY REFERENCES Accounts(id_account) NOT NULL,
 	id_transact INTEGER FOREIGN KEY REFERENCES Transactions(id_transact) NOT NULL,
 	change_amount MONEY NOT NULL
-)
+);
+
+/*TRIGGERS*/
+
+/*Actualizacion de inventario por c promedio simple*/
+ALTER TRIGGER UpdAVGUnitCost
+ON Purchases
+AFTER INSERT
+AS
+	DECLARE @UCost int, @PrID int, @Uqty int;
+	SELECT @UCost=UnitCost, @PrID=product_id, @Uqty=UnitQty  from inserted; 
+	UPDATE Products SET UnitCost=((UnitCost+@UCost)/2), UnitsInStock=UnitsInStock+@Uqty 
+	WHERE ProductID=@PrID;
+	
+/*Asientos de Diario*/
