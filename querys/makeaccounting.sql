@@ -154,10 +154,13 @@ INSERT INTO F_Act VALUES(102, 'Camion de entrega', 50000, 4000, 6);
 INSERT INTO F_Act VALUES(103, 'Servidor de BD', 1500, 400, 5);
 INSERT INTO F_Act VALUES(104, 'Computador', 800, 0, 5);
 INSERT INTO F_Act VALUES(105, 'Bodega 1', 500000, 100000, 15);
-INSERT INTO F_Act VALUES(100, 'Bodega 2', 500000, 90000, 15);
-INSERT INTO F_Act VALUES(100, 'Edificio Principal', 650000, 125000, 20);
-INSERT INTO F_Act VALUES(100, 'Maquina de embalaje', 275000, 0, 10);
+INSERT INTO F_Act VALUES(106, 'Bodega 2', 500000, 90000, 15);
+INSERT INTO F_Act VALUES(107, 'Edificio Principal', 650000, 125000, 20);
+INSERT INTO F_Act VALUES(108, 'Maquina de embalaje', 275000, 0, 10);
+INSERT INTO F_Act VALUES(109, 'Maquina de embalaje', 275000, 0, 10);
+INSERT INTO F_Act VALUES(110, 'Moto de reparto', 2500, 0, 3);
 
+select * from Accounts
 /*TRIGGERS*/
 --Actualizacion de totales
 ALTER TRIGGER Upd_account_totals
@@ -182,9 +185,9 @@ AS
 
 	UPDATE Accounts SET book_value=((select book_value from Accounts where acconunt_name='UAII')-(select book_value from Accounts where acconunt_name='Intereses por pagar')) WHERE acconunt_name='UAI';
 	UPDATE Accounts SET book_value=((SELECT book_value FROM Accounts WHERE acconunt_name='UAI')*0.3) WHERE acconunt_name='IR del ejercicio';
-	UPDATE Accounts SET book_value=(SELECT book_value FROM Accounts WHERE acconunt_name='IR del ejercicio')+book_value WHERE acconunt_name='IR por pagar';
+	UPDATE Accounts SET book_value=(SELECT book_value FROM Accounts WHERE acconunt_name='IR del ejercicio') WHERE acconunt_name='IR por pagar';
 	UPDATE Accounts SET book_value=((select book_value from Accounts where acconunt_name='UAI')-(select book_value from Accounts where acconunt_name='IR del ejercicio')) WHERE acconunt_name='UDII';
-	UPDATE Accounts SET book_value=(SELECT book_value FROM Accounts WHERE acconunt_name='UDII')+book_value WHERE acconunt_name='Ut. Neta despues de IR';
+	UPDATE Accounts SET book_value=(SELECT book_value FROM Accounts WHERE acconunt_name='UDII') WHERE acconunt_name='Ut. Neta despues de IR';
 
 
 CREATE TRIGGER Ins_account_totals
@@ -225,9 +228,16 @@ AS
 	WHERE ProductID=@PrID;
 	UPDATE Accounts SET book_value=(SELECT SUM(UnitCost*UnitsInStock) FROM Products) WHERE acconunt_name='Inventario'
 	
-CREATE TRIGGER F_act_update
+Alter TRIGGER F_act_ins
 on F_act
 after insert
 as
 	UPDATE Accounts SET book_value=(SELECT SUM(book_value) FROM F_Act) WHERE acconunt_name='Activos fijos';
-	UPDATE Accounts SET book_value=(SELECT SUM((book_value-disc_value)) FROM F_Act) WHERE acconunt_name='Activos fijos';
+	UPDATE Accounts SET book_value=-(SELECT SUM((book_value-disc_value)/lifespan) FROM F_Act) WHERE acconunt_name='Depreciacion Act. Fijos';
+
+alter TRIGGER F_act_upd
+on F_act
+after update
+as
+	UPDATE Accounts SET book_value=(SELECT SUM(book_value) FROM F_Act) WHERE acconunt_name='Activos fijos';
+	UPDATE Accounts SET book_value=-(SELECT SUM((book_value-disc_value)/lifespan) FROM F_Act) WHERE acconunt_name='Depreciacion Act. Fijos';
