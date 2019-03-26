@@ -159,6 +159,9 @@ INSERT INTO F_Act VALUES(107, 'Edificio Principal', 650000, 125000, 20);
 INSERT INTO F_Act VALUES(108, 'Maquina de embalaje', 275000, 0, 10);
 INSERT INTO F_Act VALUES(109, 'Maquina de embalaje', 275000, 0, 10);
 INSERT INTO F_Act VALUES(110, 'Moto de reparto', 2500, 0, 3);
+INSERT INTO F_Act VALUES(111, 'Moto de reparto', 2500, 0, 3);
+INSERT INTO F_Act VALUES(112, 'Moto de reparto', 2500, 0, 3);
+INSERT INTO F_Act VALUES(113, 'Moto de reparto', 2500, 0, 3);
 
 select * from Accounts
 /*TRIGGERS*/
@@ -178,19 +181,27 @@ AS
 
 	UPDATE Accounts SET book_value=(SELECT SUM(book_value) FROM Accounts WHERE clasif='IN') WHERE acconunt_name='Ventas netas';
 	Declare @ut_brut money, @gastos_oper money;
-	set @ut_brut=(SELECT book_value FROM Accounts WHERE acconunt_name='Ventas netas')+(SELECT book_value FROM Accounts WHERE acconunt_name='Costo de Venta');
+	set @ut_brut=(SELECT book_value FROM Accounts WHERE acconunt_name='Ventas netas')-(SELECT book_value FROM Accounts WHERE acconunt_name='Costo de Venta');
 	UPDATE Accounts SET book_value=@ut_brut WHERE acconunt_name='Utilidad bruta';
 	set @gastos_oper=(SELECT book_value FROM Accounts WHERE acconunt_name='Gastos de venta')+(SELECT book_value FROM Accounts WHERE acconunt_name='Gastos administrativos')+(SELECT book_value FROM Accounts WHERE acconunt_name='Total depreciacion');
-	UPDATE Accounts SET book_value=@gastos_oper WHERE acconunt_name='UAII';
-
+	UPDATE Accounts SET book_value=(select book_value from Accounts where acconunt_name='Utilidad bruta')-@gastos_oper WHERE acconunt_name='UAII';
 	UPDATE Accounts SET book_value=((select book_value from Accounts where acconunt_name='UAII')-(select book_value from Accounts where acconunt_name='Intereses por pagar')) WHERE acconunt_name='UAI';
-	UPDATE Accounts SET book_value=((SELECT book_value FROM Accounts WHERE acconunt_name='UAI')*0.3) WHERE acconunt_name='IR del ejercicio';
-	UPDATE Accounts SET book_value=(SELECT book_value FROM Accounts WHERE acconunt_name='IR del ejercicio') WHERE acconunt_name='IR por pagar';
-	UPDATE Accounts SET book_value=((select book_value from Accounts where acconunt_name='UAI')-(select book_value from Accounts where acconunt_name='IR del ejercicio')) WHERE acconunt_name='UDII';
-	UPDATE Accounts SET book_value=(SELECT book_value FROM Accounts WHERE acconunt_name='UDII') WHERE acconunt_name='Ut. Neta despues de IR';
+	if((select book_value from Accounts where acconunt_name='UAI')<0)
+	begin
+		update Accounts set book_value=0 where acconunt_name='IR del ejercicio';
+		UPDATE Accounts SET book_value=(SELECT book_value FROM Accounts WHERE acconunt_name='IR del ejercicio') WHERE acconunt_name='IR por pagar';
+		UPDATE Accounts SET book_value=(select book_value from Accounts where acconunt_name='UAI') WHERE acconunt_name='UDII';
+		UPDATE Accounts SET book_value=(SELECT book_value FROM Accounts WHERE acconunt_name='UDII') WHERE acconunt_name='Ut. Neta despues de IR';
+	end
+	else
+	begin
+		UPDATE Accounts SET book_value=((SELECT book_value FROM Accounts WHERE acconunt_name='UAI')*0.3) WHERE acconunt_name='IR del ejercicio';
+		UPDATE Accounts SET book_value=(SELECT book_value FROM Accounts WHERE acconunt_name='IR del ejercicio') WHERE acconunt_name='IR por pagar';	
+		UPDATE Accounts SET book_value=((select book_value from Accounts where acconunt_name='UAI')-(select book_value from Accounts where acconunt_name='IR del ejercicio')) WHERE acconunt_name='UDII';
+		UPDATE Accounts SET book_value=(SELECT book_value FROM Accounts WHERE acconunt_name='UDII') WHERE acconunt_name='Ut. Neta despues de IR';
+	end
 
-
-CREATE TRIGGER Ins_account_totals
+alter TRIGGER Ins_account_totals
 ON Accounts
 AFTER INSERT
 AS
@@ -205,17 +216,25 @@ AS
 
 	UPDATE Accounts SET book_value=(SELECT SUM(book_value) FROM Accounts WHERE clasif='IN') WHERE acconunt_name='Ventas netas';
 	Declare @ut_brut money, @gastos_oper money;
-	set @ut_brut=(SELECT book_value FROM Accounts WHERE acconunt_name='Ventas netas')+(SELECT book_value FROM Accounts WHERE acconunt_name='Costo de Venta');
+	set @ut_brut=(SELECT book_value FROM Accounts WHERE acconunt_name='Ventas netas')-(SELECT book_value FROM Accounts WHERE acconunt_name='Costo de Venta');
 	UPDATE Accounts SET book_value=@ut_brut WHERE acconunt_name='Utilidad bruta';
 	set @gastos_oper=(SELECT book_value FROM Accounts WHERE acconunt_name='Gastos de venta')+(SELECT book_value FROM Accounts WHERE acconunt_name='Gastos administrativos')+(SELECT book_value FROM Accounts WHERE acconunt_name='Total depreciacion');
-	UPDATE Accounts SET book_value=@gastos_oper WHERE acconunt_name='UAII';
-
+	UPDATE Accounts SET book_value=(select book_value from Accounts where acconunt_name='Utilidad bruta')-@gastos_oper WHERE acconunt_name='UAII';
 	UPDATE Accounts SET book_value=((select book_value from Accounts where acconunt_name='UAII')-(select book_value from Accounts where acconunt_name='Intereses por pagar')) WHERE acconunt_name='UAI';
-	UPDATE Accounts SET book_value=((SELECT book_value FROM Accounts WHERE acconunt_name='UAI')*0.3) WHERE acconunt_name='IR del ejercicio';
-	UPDATE Accounts SET book_value=(SELECT book_value FROM Accounts WHERE acconunt_name='IR del ejercicio')+book_value WHERE acconunt_name='IR por pagar';
-	UPDATE Accounts SET book_value=((select book_value from Accounts where acconunt_name='UAI')-(select book_value from Accounts where acconunt_name='IR del ejercicio')) WHERE acconunt_name='UDII';
-	UPDATE Accounts SET book_value=(SELECT book_value FROM Accounts WHERE acconunt_name='UDII')+book_value WHERE acconunt_name='Ut. Neta despues de IR';
-
+	if((select book_value from Accounts where acconunt_name='UAI')<0)
+	begin
+		update Accounts set book_value=0 where acconunt_name='IR del ejercicio';
+		UPDATE Accounts SET book_value=(SELECT book_value FROM Accounts WHERE acconunt_name='IR del ejercicio') WHERE acconunt_name='IR por pagar';
+		UPDATE Accounts SET book_value=(select book_value from Accounts where acconunt_name='UAI') WHERE acconunt_name='UDII';
+		UPDATE Accounts SET book_value=(SELECT book_value FROM Accounts WHERE acconunt_name='UDII') WHERE acconunt_name='Ut. Neta despues de IR';
+	end
+	else
+	begin
+		UPDATE Accounts SET book_value=((SELECT book_value FROM Accounts WHERE acconunt_name='UAI')*0.3) WHERE acconunt_name='IR del ejercicio';
+		UPDATE Accounts SET book_value=(SELECT book_value FROM Accounts WHERE acconunt_name='IR del ejercicio') WHERE acconunt_name='IR por pagar';	
+		UPDATE Accounts SET book_value=((select book_value from Accounts where acconunt_name='UAI')-(select book_value from Accounts where acconunt_name='IR del ejercicio')) WHERE acconunt_name='UDII';
+		UPDATE Accounts SET book_value=(SELECT book_value FROM Accounts WHERE acconunt_name='UDII') WHERE acconunt_name='Ut. Neta despues de IR';
+	end
 
 /*Actualizacion de inventario por c promedio simple*/
 ALTER TRIGGER UpdAVGUnitCost
@@ -227,13 +246,14 @@ AS
 	UPDATE Products SET UnitCost=((UnitCost+@UCost)/2), UnitsInStock=UnitsInStock+@Uqty 
 	WHERE ProductID=@PrID;
 	UPDATE Accounts SET book_value=(SELECT SUM(UnitCost*UnitsInStock) FROM Products) WHERE acconunt_name='Inventario'
-	
+/*actualizacion de la cuenta de activos fijos al actualizar o insertar*/
 Alter TRIGGER F_act_ins
 on F_act
 after insert
 as
 	UPDATE Accounts SET book_value=(SELECT SUM(book_value) FROM F_Act) WHERE acconunt_name='Activos fijos';
 	UPDATE Accounts SET book_value=-(SELECT SUM((book_value-disc_value)/lifespan) FROM F_Act) WHERE acconunt_name='Depreciacion Act. Fijos';
+	UPDATE Accounts SET book_value=(SELECT SUM((book_value-disc_value)/lifespan) FROM F_Act) WHERE acconunt_name='Total depreciacion';
 
 alter TRIGGER F_act_upd
 on F_act
@@ -241,3 +261,20 @@ after update
 as
 	UPDATE Accounts SET book_value=(SELECT SUM(book_value) FROM F_Act) WHERE acconunt_name='Activos fijos';
 	UPDATE Accounts SET book_value=-(SELECT SUM((book_value-disc_value)/lifespan) FROM F_Act) WHERE acconunt_name='Depreciacion Act. Fijos';
+	UPDATE Accounts SET book_value=(SELECT SUM((book_value-disc_value)/lifespan) FROM F_Act) WHERE acconunt_name='Total depreciacion';
+
+--TODO:
+/*actualizacion de la cuenta de ventas y costo de venta al insertar en order details*/
+
+--PEND--
+
+
+/*actualizacion de la respectiva cuenta al insertar una transaccion detail y validar partida doble*/
+
+--PEND--
+
+/*procedimientos almacenados para insercion de ventas y transacciones*/
+
+/*procedimientos almacenados para razones financieras y de apalancamiento*/
+
+/*procedimientos almacenados para flujo de efectivo*/
