@@ -11,3 +11,9 @@ backup database NorthwindCO
 to disk='ruta'
 with name='nombre',
 description='descripcion';
+
+--añadir otro tipo de transacciones a este log, fecha|github_username|descripcion
+/*LOG*/
+/*26-03-19 | thefoo547 |  He tenido que deshacer los cambios correspondientes al ultimo cambio al modelo en el backup
+pertenecientes al numero de archivo  , ya que he tenido que rediseñar la clasificacion del catalogo de cuentas
+utilizando herencia relacional*/
