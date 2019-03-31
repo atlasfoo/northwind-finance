@@ -210,9 +210,67 @@ as
 /*SP's*/
 CREATE PROCEDURE Balance_General
 AS
-	SELECT * FROM Accounts
-
-
+	--activos circulantes
+	SELECT clasification_code,  account_name as [Nombre Cuenta],
+	book_value as [Valor en Libro] FROM Accounts
+	WHERE clasification_code=1 
+	union
+	--total ac
+	SELECT 1.5,'Total Activos Circulante',
+	(select sum(book_value) from Accounts where clasification_code=1)
+	union
+	--activos no circulantes
+	SELECT clasification_code, account_name ,
+	book_value FROM Accounts
+	WHERE clasification_code=2 
+	union
+	--total anc
+	SELECT 2.5, 'Total Activo No Circulante',
+	(select sum(book_value) from Accounts where clasification_code=2)
+	union
+	--total activos
+	SELECT 2.75, 'Total Activo',
+	(select sum(book_value) from Accounts a inner join AccountSubclasification asb on 
+	a.clasification_code=asb.subc_id where asb.clasification_id=1)
+	union
+	--pasivo circulante
+	SELECT clasification_code, account_name ,
+	book_value FROM Accounts
+	WHERE clasification_code=3
+	union
+	--total p.c
+	SELECT 3.5,'Total Pasivos Circulante',
+	(select sum(book_value) from Accounts where clasification_code=3)
+	union
+	--pasivo no circulante
+	SELECT clasification_code, account_name ,
+	book_value FROM Accounts
+	WHERE clasification_code=4
+	union
+	--total pnc
+	SELECT 4.5,'Total Pasivos No Circulante',
+	(select sum(book_value) from Accounts where clasification_code=4)
+	union
+	--total p
+	SELECT 4.75, 'Total Pasivo',
+	(select sum(book_value) from Accounts a inner join AccountSubclasification asb on 
+	a.clasification_code=asb.subc_id where asb.clasification_id=2)
+	union
+	--capital
+	SELECT clasification_code, account_name ,
+	book_value FROM Accounts
+	WHERE clasification_code=5
+	union
+	--total c
+	SELECT 5.5, 'Total Capital',
+	(select sum(book_value) from Accounts a inner join AccountSubclasification asb on 
+	a.clasification_code=asb.subc_id where asb.clasification_id=3)
+	union
+	--total p+c
+	SELECT 5.75, 'Total Pasivo+Capital',
+	(select sum(book_value) from Accounts a inner join AccountSubclasification asb on 
+	a.clasification_code=asb.subc_id where asb.clasification_id=3 or asb.clasification_id=2);
+	
 
 --TODO:
 /*actualizacion de la cuenta de ventas y costo de venta al insertar en order details*/
