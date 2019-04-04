@@ -55,14 +55,13 @@ INSERT INTO AccountSubclasification VALUES(2,1,'Pasivo a Corto Plazo');
 INSERT INTO AccountSubclasification VALUES(2,2,'Pasivo a Largo Plazo');
 INSERT INTO AccountSubclasification VALUES(3,1,'Capital Contable');
 INSERT INTO AccountSubclasification VALUES(4,1,'Ventas');
-INSERT INTO AccountSubclasification VALUES(4,2,'Productos Financieros');
-INSERT INTO AccountSubclasification VALUES(4,3,'Otros productos');
 INSERT INTO AccountSubclasification VALUES(5,1,'Costo de Venta');
 INSERT INTO AccountSubclasification VALUES(5,2,'Gastos de Venta');
 INSERT INTO AccountSubclasification VALUES(5,3,'Gastos de Administracion');
+INSERT INTO AccountSubclasification VALUES(4,2,'Productos Financieros');
+INSERT INTO AccountSubclasification VALUES(4,3,'Otros productos');
 INSERT INTO AccountSubclasification VALUES(5,4,'Gastos financieros');
 INSERT INTO AccountSubclasification VALUES(5,5,'Impuestos');
-
 
 
 CREATE TABLE Accounts(
@@ -154,13 +153,11 @@ INSERT INTO Accounts VALUES('Ut. Neta despues de IR', 0,5);
 --Estado de resultados
 INSERT INTO Accounts VALUES('Ventas totales', 0, 6);
 INSERT INTO Accounts VALUES('Descuento sobre ventas', 0, 6);
-INSERT INTO Accounts VALUES('Costo de venta', 0, 9);
-INSERT INTO Accounts VALUES('Gastos de venta', 78000, 10);
-INSERT INTO Accounts VALUES('Total depreciacion', 0, 10);
-INSERT INTO Accounts VALUES('Gastos administrativos',50000,11);
+INSERT INTO Accounts VALUES('Costo de venta', 0, 7);
+INSERT INTO Accounts VALUES('Gastos de venta', 78000, 8);
+INSERT INTO Accounts VALUES('Gastos administrativos',50000,9);
 INSERT INTO Accounts VALUES('Intereses por pagar',0, 12);
 INSERT INTO Accounts VALUES('IR del ejercicio', 0, 13);
-INSERT INTO Accounts VALUES('UDII', 0, 8);
 
 INSERT INTO F_Act VALUES(100, 'Camion de entrega', 50000, 4000, 6);
 INSERT INTO F_Act VALUES(101, 'Camion de entrega', 50000, 4000, 6);
@@ -181,35 +178,34 @@ INSERT INTO F_Act VALUES(113, 'Moto de reparto', 2500, 0, 3);
 /*TRIGGERS*/
 
 /*Actualizacion de inventario por c promedio simple*/
-ALTER TRIGGER UpdAVGUnitCost
+CREATE TRIGGER tr_UpdAVGUnitCost
 ON Purchases
-AFTER INSERT
+AFTER INSERT, UPDATE
 AS
 	DECLARE @UCost int, @PrID int, @Uqty int;
 	SELECT @UCost=UnitCost, @PrID=product_id, @Uqty=UnitQty  from inserted; 
 	UPDATE Products SET UnitCost=((UnitCost+@UCost)/2), UnitsInStock=UnitsInStock+@Uqty 
 	WHERE ProductID=@PrID;
-	UPDATE Accounts SET book_value=(SELECT SUM(UnitCost*UnitsInStock) FROM Products) WHERE acconunt_name='Inventario'
+	UPDATE Accounts SET book_value=(SELECT SUM(UnitCost*UnitsInStock) FROM Products) WHERE account_name='Inventario';
 /*actualizacion de la cuenta de activos fijos al actualizar o insertar*/
-Alter TRIGGER F_act_ins
+alter TRIGGER tr_upd_ActivosFijos
 on F_act
-after insert
+after insert, update
 as
-	UPDATE Accounts SET book_value=(SELECT SUM(book_value) FROM F_Act) WHERE acconunt_name='Activos fijos';
-	UPDATE Accounts SET book_value=-(SELECT SUM((book_value-disc_value)/lifespan) FROM F_Act) WHERE acconunt_name='Depreciacion Act. Fijos';
-	UPDATE Accounts SET book_value=(SELECT SUM((book_value-disc_value)/lifespan) FROM F_Act) WHERE acconunt_name='Total depreciacion';
+	declare @deprec_lin int;
+	set @deprec_lin=(SELECT SUM((book_value-disc_value)/lifespan)from F_Act);
+	UPDATE Accounts SET book_value=(SELECT SUM(book_value) FROM F_Act) WHERE account_name='Activos fijos';
+	UPDATE Accounts SET book_value=-@deprec_lin WHERE account_name='Depreciacion Act. Fijos';
+	update Accounts set book_value=book_value+@deprec_lin where account_name='Gastos de Venta';
 
-alter TRIGGER F_act_upd
-on F_act
-after update
-as
-	UPDATE Accounts SET book_value=(SELECT SUM(book_value) FROM F_Act) WHERE acconunt_name='Activos fijos';
-	UPDATE Accounts SET book_value=-(SELECT SUM((book_value-disc_value)/lifespan) FROM F_Act) WHERE acconunt_name='Depreciacion Act. Fijos';
-	UPDATE Accounts SET book_value=(SELECT SUM((book_value-disc_value)/lifespan) FROM F_Act) WHERE acconunt_name='Total depreciacion';
 
+
+exec sp_Balance_General
+exec sp_Estado_Resultados
 /*SP's*/
-CREATE PROCEDURE Balance_General
+ALTER PROCEDURE sp_Balance_General
 AS
+	exec sp_Upd_Utilidad;
 	--activos circulantes
 	SELECT clasification_code,  account_name as [Nombre Cuenta],
 	book_value as [Valor en Libro] FROM Accounts
@@ -270,7 +266,118 @@ AS
 	SELECT 5.75, 'Total Pasivo+Capital',
 	(select sum(book_value) from Accounts a inner join AccountSubclasification asb on 
 	a.clasification_code=asb.subc_id where asb.clasification_id=3 or asb.clasification_id=2);
+
+CREATE PROCEDURE sp_Upd_Utilidad
+AS
+	--actualizacion de cuentas
+	if(((((SELECT sum(book_value)
+	FROM Accounts a WHERE a.clasification_code=6)-(SELECT sum(book_value)
+	FROM Accounts a WHERE a.clasification_code=7))-((SELECT sum(book_value)
+	FROM Accounts a WHERE a.clasification_code=8 or
+	a.clasification_code=9 or a.clasification_code=11)))-(select sum(book_value) from Accounts 
+	where clasification_code=10 or clasification_code=12))>0)
+	begin
+		update Accounts set book_value=((((SELECT sum(book_value)
+		FROM Accounts a WHERE a.clasification_code=6)-(SELECT sum(book_value)
+		FROM Accounts a WHERE a.clasification_code=7))-((SELECT sum(book_value)
+		FROM Accounts a WHERE a.clasification_code=8 or
+		a.clasification_code=9 or a.clasification_code=11)))-(select sum(book_value) from Accounts 
+		where clasification_code=10 or clasification_code=12))*0.3 where account_name='IR del ejercicio';
+	end
+	else
+	begin
+		update Accounts set book_value=0 where account_name='IR del ejercicio';
+	end
+
+	update Accounts set book_value=(select book_value from Accounts where account_name='IR del ejercicio')
+	where account_name='IR por pagar';
+
+	update Accounts set book_value=(((((SELECT sum(book_value)
+	FROM Accounts a WHERE a.clasification_code=6)-(SELECT sum(book_value)
+	FROM Accounts a WHERE a.clasification_code=7))-((SELECT sum(book_value)
+	FROM Accounts a WHERE a.clasification_code=8 or
+	a.clasification_code=9 or a.clasification_code=11)))-(select sum(book_value) from Accounts 
+	where clasification_code=10 or clasification_code=12))-(select book_value from 
+	Accounts where account_name='IR del ejercicio')) where account_name='Ut. Neta despues de IR';
 	
+
+
+CREATE PROCEDURE sp_Estado_Resultados
+AS
+
+	EXEC sp_Upd_Utilidad;
+
+	--ingresos y descuentos
+	SELECT clasification_code, account_name as [Nombre Cuenta],
+	book_value as [Valor en libro]
+	FROM Accounts a WHERE a.clasification_code=6
+	union
+	SELECT 6.5,'Ventas Netas', (SELECT sum(book_value)
+	FROM Accounts a WHERE a.clasification_code=6)
+	union
+	--costo de venta
+	SELECT clasification_code, account_name as [Nombre Cuenta],
+	book_value as [Valor en libro]
+	FROM Accounts a WHERE a.clasification_code=7
+	union
+	SELECT 7.5,'Utilidad Bruta', ((SELECT sum(book_value)
+	FROM Accounts a WHERE a.clasification_code=6)-(SELECT sum(book_value)
+	FROM Accounts a WHERE a.clasification_code=7))
+	union
+	--gasto de venta
+	SELECT clasification_code, account_name as [Nombre Cuenta],
+	book_value as [Valor en libro]
+	FROM Accounts a WHERE a.clasification_code=8
+	union
+	--gasto de admon
+	SELECT clasification_code, account_name as [Nombre Cuenta],
+	book_value as [Valor en libro]
+	FROM Accounts a WHERE a.clasification_code=9
+	union
+	--otros prods
+	SELECT clasification_code, account_name as [Nombre Cuenta],
+	book_value as [Valor en libro]
+	FROM Accounts a WHERE a.clasification_code=11
+	union
+	SELECT 11.5,'Total Gastos de Operación', (SELECT sum(book_value)
+	FROM Accounts a WHERE a.clasification_code=8 or
+	a.clasification_code=9 or a.clasification_code=11)
+	union
+	SELECT 11.75,'UAII', (((SELECT sum(book_value)
+	FROM Accounts a WHERE a.clasification_code=6)-(SELECT sum(book_value)
+	FROM Accounts a WHERE a.clasification_code=7))-((SELECT sum(book_value)
+	FROM Accounts a WHERE a.clasification_code=8 or
+	a.clasification_code=9 or a.clasification_code=11)))
+	union
+	--productos financieros
+	SELECT 11.99, account_name as [Nombre Cuenta],
+	book_value as [Valor en libro]
+	FROM Accounts a WHERE a.clasification_code=10
+	union
+	--intereses y gastos financieros
+	SELECT clasification_code, account_name as [Nombre Cuenta],
+	book_value as [Valor en libro]
+	FROM Accounts a WHERE a.clasification_code=12
+	UNION
+	SELECT 12.5, 'Total financieros', (select sum(book_value) from Accounts 
+	where clasification_code=10 or clasification_code=12)
+	union
+	SELECT 12.75, 'UAI', ((((SELECT sum(book_value)
+	FROM Accounts a WHERE a.clasification_code=6)-(SELECT sum(book_value)
+	FROM Accounts a WHERE a.clasification_code=7))-((SELECT sum(book_value)
+	FROM Accounts a WHERE a.clasification_code=8 or
+	a.clasification_code=9 or a.clasification_code=11)))-(select sum(book_value) from Accounts 
+	where clasification_code=10 or clasification_code=12))
+	union
+	--impuestos
+	SELECT clasification_code, account_name as [Nombre Cuenta],
+	book_value as [Valor en libro]
+	FROM Accounts a WHERE a.clasification_code=13
+	union
+	--utilidad neta
+	SELECT 250, account_name, book_value FROM Accounts 
+	WHERE account_name='Ut. Neta despues de IR';
+
 
 --TODO:
 /*actualizacion de la cuenta de ventas y costo de venta al insertar en order details*/
