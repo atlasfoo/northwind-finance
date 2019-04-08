@@ -7,7 +7,7 @@ ADD UnitCost MONEY;
 --procedimiento para llenar el costo de venta con un 25% de margen de ganancia
 select * from Products
 
-ALTER PROC FillUnitCost
+CREATE PROC FillUnitCost
 AS
 	DECLARE @cont int, @tam int;
 	SET @cont = 1;
@@ -128,7 +128,7 @@ select * from AccountSubclasification;
 INSERT INTO Accounts VALUES('Banco', 900000,1);
 INSERT INTO Accounts VALUES('Caja', 150000, 1);
 INSERT INTO Accounts VALUES('Fondo de Oportunidades', 15000,1);
-INSERT INTO Accounts VALUES('Inventario', 0, 1);
+INSERT INTO Accounts VALUES('Inventario', 50, 1);
 INSERT INTO Accounts VALUES('Clientes', 850000,1);
 INSERT INTO Accounts VALUES('Est. de cuentas incobrables', -10000,1);
 INSERT INTO Accounts VALUES('Documentos por cobrar',45000,1);
@@ -177,7 +177,7 @@ INSERT INTO F_Act VALUES(114, 'Maquina de etiquetas', 250, 0, 3);
 
 /*TRIGGERS*/
 /*actualizacion de la cuenta de activos fijos al actualizar o insertar*/
-alter TRIGGER tr_upd_ActivosFijos
+CREATE TRIGGER tr_upd_ActivosFijos
 on F_act
 after insert, update
 as
@@ -218,7 +218,7 @@ exec sp_Estado_Resultados
 
 select * from AccountSubclasification
 /*SP's*/
-ALTER PROCEDURE sp_Balance_General
+CREATE PROCEDURE sp_Balance_General
 AS
 	exec sp_Upd_Utilidad;
 	--activos circulantes
@@ -282,7 +282,7 @@ AS
 	(select sum(book_value) from Accounts a inner join AccountSubclasification asb on 
 	a.clasification_code=asb.acc_subc_id where asb.clasification_id=3 or asb.clasification_id=2);
 
-ALTER PROCEDURE sp_Upd_Utilidad
+CREATE PROCEDURE sp_Upd_Utilidad
 AS
 	UPDATE Accounts set book_value=(select sum(UnitCost*UnitsInStock) from Products) where account_name='Inventario';
 	--actualizacion de cuentas
@@ -331,7 +331,7 @@ AS
 	
 
 
-ALTER PROCEDURE sp_Estado_Resultados
+CREATE PROCEDURE sp_Estado_Resultados
 AS
 
 	EXEC sp_Upd_Utilidad;
@@ -413,5 +413,9 @@ AS
 
 --TODO:
 /*procedimientos almacenados para razones financieras y de apalancamiento*/
+
+
+
+
 
 /*procedimientos almacenados para flujo de efectivo*/
