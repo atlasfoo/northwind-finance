@@ -34,7 +34,7 @@ Select * from AccountClasification
 
 	Create procedure SP_rotacion_inventario_dias
 	as
-	Select (360 / ((select sum(book_value) from Accounts whereid_account = 27) / 
+	Select (360 / ((select sum(book_value) from Accounts where id_account = 27) / 
 	(select book_value from Accounts where id_account = 4))) as [Rotacion de inventario en dia]
 
 	Create procedure SP_rotacion_de_cuentas_por_cobrar
