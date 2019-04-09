@@ -6,15 +6,14 @@ ALTER TABLE Products
 ADD UnitCost MONEY;
 --procedimiento para llenar el costo de venta con un 25% de margen de ganancia
 select * from Products
-
-CREATE PROC FillUnitCost
+ALTER PROC FillUnitCost
 AS
 	DECLARE @cont int, @tam int;
 	SET @cont = 1;
 	SET @tam=(SELECT COUNT(*) FROM Products);
 	WHILE(@cont<=@tam)
 	begin
-		UPDATE Products set UnitCost=(SELECT (UnitPrice*0.60) as UnitCost FROM Products WHERE ProductID=@cont)
+		UPDATE Products set UnitCost=(SELECT (UnitPrice*0.55) as UnitCost FROM Products WHERE ProductID=@cont)
 		WHERE ProductID=@cont;
 		set @cont=@cont+1;
 	end
@@ -174,12 +173,14 @@ INSERT INTO F_Act VALUES(111, 'Moto de reparto', 2500, 0, 3);
 INSERT INTO F_Act VALUES(112, 'Moto de reparto', 2500, 0, 3);
 INSERT INTO F_Act VALUES(114, 'Maquina de etiquetas', 250, 0, 3);
 
+update Accounts set book_value=10000 where account_name='Gastos administrativos';
 
+delete from F_Act;
 /*TRIGGERS*/
 /*actualizacion de la cuenta de activos fijos al actualizar o insertar*/
-CREATE TRIGGER tr_upd_ActivosFijos
+alter TRIGGER tr_upd_ActivosFijos
 on F_act
-after insert, update
+after insert, update, delete
 as
 	declare @deprec_lin int;
 	set @deprec_lin=(SELECT SUM((book_value-disc_value)/lifespan)from F_Act);
@@ -209,8 +210,6 @@ AS
 
 */
 --pendiente terminar transacciones
-
-
 
 
 exec sp_Balance_General
@@ -282,16 +281,20 @@ AS
 	(select sum(book_value) from Accounts a inner join AccountSubclasification asb on 
 	a.clasification_code=asb.acc_subc_id where asb.clasification_id=3 or asb.clasification_id=2);
 
-CREATE PROCEDURE sp_Upd_Utilidad
+ALTER PROCEDURE sp_Upd_Utilidad
 AS
 	UPDATE Accounts set book_value=(select sum(UnitCost*UnitsInStock) from Products) where account_name='Inventario';
 	--actualizacion de cuentas
 	--ventas
-	UPDATE Accounts set book_value=(select sum(UnitPrice*Quantity) from [Order Details]) where account_name='Ventas totales';
+	UPDATE Accounts set book_value=(select sum(UnitPrice*Quantity) from [Order Details] od inner join Orders o
+	on od.OrderID=o.OrderID where YEAR(o.OrderDate)=1998) where account_name='Ventas totales';
 	--descuento sobre venta
-	UPDATE Accounts set book_value=-(select sum(UnitPrice*Quantity*Discount) from [Order Details]) where account_name='Descuento sobre ventas';	
+	UPDATE Accounts set book_value=-(select sum(UnitPrice*Quantity*Discount) from [Order Details] od inner join Orders o
+	on od.OrderID=o.OrderID where YEAR(o.OrderDate)=1998) where account_name='Descuento sobre ventas';	
 	--costo de venta
-	UPDATE Accounts SET book_value=(select sum(od.Quantity*p.UnitCost) from [Order Details] od inner join Products p on p.ProductID=od.ProductID)
+	UPDATE Accounts SET book_value=(select sum(od.Quantity*p.UnitCost) from [Order Details] od inner join Products p on p.ProductID=od.ProductID
+	inner join Orders o
+	on od.OrderID=o.OrderID where YEAR(o.OrderDate)=1998)
 	WHERE account_name='Costo de venta';
 
 	--depreciacion
@@ -410,6 +413,36 @@ AS
 	--utilidad neta
 	SELECT 250, account_name, book_value FROM Accounts 
 	WHERE account_name='Ut. Neta despues de IR';
+
+
+select * from [Order Details];
+select * from Orders where year(OrderDate)=1998;
+select * from Products;
+
+exec sp_add_vta 10808, 1, 5, 0;
+
+
+CREATE PROC sp_add_vta
+@ord_id int, @prod_id int, @qty int, @disc float
+AS
+	declare @unt_pr int;
+	set @unt_pr=(select UnitPrice from Products where ProductID=@prod_id);
+	INSERT INTO [Order Details] values(@ord_id, @prod_id, @unt_pr, @qty, @disc);
+
+CREATE TRIGGER tr_add_vta
+ON [Order Details]
+AFTER INSERT
+AS
+	declare @amount float
+	--actualizacion de banco
+	select @amount=((UnitPrice*Quantity)-(UnitPrice*Quantity*Discount)) from inserted;
+	UPDATE Accounts set book_value=book_value+@amount*1.15 where account_name='Banco';
+	update Accounts set book_value=book_value+@amount*0.15 where account_name='IVA por pagar';
+	--sacando de inventario
+	declare @qty int, @prod_id int
+	select @prod_id=ProductID, @qty=Quantity from inserted;
+	update Products set UnitsInStock=UnitsInStock-@qty where ProductID=@prod_id;
+
 
 --TODO:
 /*procedimientos almacenados para razones financieras y de apalancamiento*/
