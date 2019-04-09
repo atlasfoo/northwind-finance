@@ -77,12 +77,12 @@ CREATE TABLE Accounts(
 /*La tabla reg accounts registra el valor en libro de las cuentas en un
 determinado año, con el fin de obtener el estado financiero respectivo de ese año.
 Por convencion, las fechas de ese año son el ultimo dia*/
-
+drop table Reg_Accounts
 CREATE TABLE Reg_Accounts(
 	id_reg INTEGER PRIMARY KEY IDENTITY(1,1),
 	id_account INTEGER FOREIGN KEY REFERENCES Accounts(id_account),
 	book_value MONEY,
-	yr DATE
+	yr INTEGER
 );
 
 CREATE TABLE F_Act (
@@ -214,6 +214,11 @@ AS
 
 exec sp_Balance_General
 exec sp_Estado_Resultados
+
+select * from Reg_Accounts;
+select * from Accounts;
+--rellenar tabla reg_accounts
+
 
 select * from AccountSubclasification
 /*SP's*/

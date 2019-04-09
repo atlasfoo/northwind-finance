@@ -9,8 +9,8 @@ replace;
 --por favor añadir nombre y descripcion al hacer respaldo luego de modificar la bd
 backup database NorthwindCO
 to disk='D:\Repos\Visual Studio Source\northwind-finance\restore_me.bak'
-with name='Contabilidad',
-description='Pend. transacciones';
+with name='Mejora ventas',
+description='Insercion de venta, actualizacion de cuentas';
 
 --añadir otro tipo de transacciones a este log, fecha|github_username|descripcion
 /*LOG*/
