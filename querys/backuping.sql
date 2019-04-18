@@ -4,7 +4,7 @@ restore filelistonly from disk='C:\northwind-finance\restore_me.bak';
 restore database NorthwindCO from disk='C:\northwind-finance\restore_me.bak'
 with move 'Northwind' to 'C:\Fin_LOG\Northwind.mdf',
 move 'Northwind_log' to 'C:\Fin_LOG\Northwind.ldf',
-replace;
+replace,file=5;
 
 --por favor añadir nombre y descripcion al hacer respaldo luego de modificar la bd
 backup database NorthwindCO

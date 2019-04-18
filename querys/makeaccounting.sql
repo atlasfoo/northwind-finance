@@ -175,6 +175,48 @@ INSERT INTO F_Act VALUES(114, 'Maquina de etiquetas', 250, 0, 3);
 
 update Accounts set book_value=10000 where account_name='Gastos administrativos';
 
+select * from AccountClasification
+select * from AccountSubclasification
+Select * from Accounts
+Select * from Reg_Accounts
+
+INSERT INTO Reg_Accounts VALUES(1,1802123.5421,1997);
+INSERT INTO Reg_Accounts VALUES(2,40245.6234,1997);
+INSERT INTO Reg_Accounts VALUES(3,10000.00,1997);
+INSERT INTO Reg_Accounts VALUES(4,0,1997);
+INSERT INTO Reg_Accounts VALUES(5,500000.00,1997);
+INSERT INTO Reg_Accounts VALUES(6,-5000,1997);
+INSERT INTO Reg_Accounts VALUES(7,30600.00,1997);
+INSERT INTO Reg_Accounts VALUES(8,1002000.00,1997);
+INSERT INTO Reg_Accounts VALUES(9,-50000,1997);
+INSERT INTO Reg_Accounts VALUES(10,400600,1997);
+INSERT INTO Reg_Accounts VALUES(11,120000,1997);
+INSERT INTO Reg_Accounts VALUES(12,20400,1997);
+INSERT INTO Reg_Accounts VALUES(13,200000,1997);
+INSERT INTO Reg_Accounts VALUES(14,350600,1997);
+INSERT INTO Reg_Accounts VALUES(15,304234.4623,1997);
+INSERT INTO Reg_Accounts VALUES(16,25500.20,1997);
+INSERT INTO Reg_Accounts VALUES(17,2180.1234,1997);
+INSERT INTO Reg_Accounts VALUES(18,5000000.00,1997);
+INSERT INTO Reg_Accounts VALUES(19,345000,1997);
+INSERT INTO Reg_Accounts VALUES(20,345500,1997);
+INSERT INTO Reg_Accounts VALUES(21,341239,1997);
+INSERT INTO Reg_Accounts VALUES(22,1030234.1245,1997);
+INSERT INTO Reg_Accounts VALUES(23,0,1997);
+INSERT INTO Reg_Accounts VALUES(24,0,1997);
+INSERT INTO Reg_Accounts VALUES(25,0,1997);
+INSERT INTO Reg_Accounts VALUES(26,0,1997);
+INSERT INTO Reg_Accounts VALUES(27,0,1997);
+INSERT INTO Reg_Accounts VALUES(28,23400,1997);
+INSERT INTO Reg_Accounts VALUES(29,5000,1997);
+INSERT INTO Reg_Accounts VALUES(30,0,1997);
+INSERT INTO Reg_Accounts VALUES(31,4000.7868,1997);
+
+Update Reg_Accounts set book_value =  100000 where id_account=18
+/*Sorrry me confundi en el valor de los proveedores del año anterior revisar si fue cambiado :v*/
+
+
+
 delete from F_Act;
 /*TRIGGERS*/
 /*actualizacion de la cuenta de activos fijos al actualizar o insertar*/
@@ -452,8 +494,207 @@ AS
 --TODO:
 /*procedimientos almacenados para razones financieras y de apalancamiento*/
 
+/*--------------CREACION DE RAZONES FINANCIERAS----------------*/
 
+	create procedure Razones_financieras_del_añoactual
+	as
+	declare @deprec int;
+	set @deprec=-(select book_value from Accounts where account_name='Depreciacion Act. Fijos');
 
+	Select 'Capital de trabajo' as [Razones Financieras],(select sum(book_value) from Accounts where clasification_code=1) - (select sum(book_value) 
+	from Accounts where clasification_code=3)  as [CALCULO]
+	union
+	Select 'Razon Circulante',(select sum(book_value) from Accounts where clasification_code=1) / (select sum(book_value) 
+	from Accounts where clasification_code=3) 
+	union
+	Select 'Razon Rapida',((select sum(book_value) from Accounts where clasification_code=1) - (select book_value from Accounts where id_account = 4))  
+	/ (select sum(book_value) 
+	from Accounts where clasification_code=3)
+	union
+	Select 'Rotacion de inventario',(select sum(book_value) from Accounts where  id_account = 27) / 
+	(select book_value from Accounts where id_account = 4) 
+	union
+	Select 'Rotacion de inventario en meses',(12 / ((select sum(book_value) from Accounts where id_account = 27) / 
+	(select book_value from Accounts where id_account = 4))) 
+	union
+	Select 'Rotacion de inventario en dia',(360 / ((select sum(book_value) from Accounts where id_account = 27) / 
+	(select book_value from Accounts where id_account = 4))) 
+	union
+	Select  'Rotacion de cuentas por cobrar',(select sum(book_value) 
+	from Accounts where clasification_code=6) /   
+	(select book_value from Accounts where id_account = 5)
+	union
+	Select 'Periodo promedio de cobro',(select book_value from Accounts where id_account = 5) / (360/(select sum(book_value) 
+	from Accounts where clasification_code=6))
+	union
+	Select 'Rotacion de activo fijo',(select sum(book_value) 
+	from Accounts where clasification_code=6) /
+	((select book_value from Accounts where id_account = 8)-(select book_value from Accounts where id_account = 8))--esta resta es por la depreciacion
+	union
+	Select 'Rotacion de activos totales',(select sum(book_value) 
+	from Accounts where clasification_code=6) /(select sum(book_value) from Accounts a inner join AccountSubclasification asb on 
+	a.clasification_code=asb.acc_subc_id where asb.clasification_id=1) 
+	union
+	Select 'Razon de deuda total',(select sum(book_value) from Accounts a inner join AccountSubclasification asb on 
+	a.clasification_code=asb.acc_subc_id where asb.clasification_id=2) / (select sum(book_value) from Accounts a inner join AccountSubclasification asb on 
+	a.clasification_code=asb.acc_subc_id where asb.clasification_id=1) 
+	union
+	Select 'Capacidad de pago de intereses',(((SELECT sum(book_value)
+	FROM Accounts a WHERE a.clasification_code=6)-(SELECT sum(book_value)
+	FROM Accounts a WHERE a.clasification_code=7))-((SELECT sum(book_value)
+	FROM Accounts a WHERE a.clasification_code=8 or
+	a.clasification_code=9 or a.clasification_code=11)+@deprec)) / (select book_value from Accounts where id_account = 12)
+	union
+	Select 'Razon de pasivo a capital',(select sum(book_value) from Accounts where clasification_code=4) / 
+	(select sum(book_value) from Accounts a inner join AccountSubclasification asb on 
+	a.clasification_code=asb.acc_subc_id where asb.clasification_id=3) 
+	union
+	Select 'Margen de utilidad bruta',((select sum(book_value) 
+	from Accounts where clasification_code=6) -( select book_value from Accounts where id_account = 27)) / (select sum(book_value) 
+	from Accounts where clasification_code=6) 
+	union
+	Select 'Margen de utilidad operativa',(select book_value from Accounts where id_account = 24) / (select sum(book_value) 
+	from Accounts where clasification_code=6) 
+	union
+	Select 'Margen de utilidad neta',(select book_value from Accounts where id_account = 24) / (select sum(book_value) 
+	from Accounts where clasification_code=6) 
+	union
+	Select 'Rendimiento de los activos',(select book_value from Accounts where id_account = 24) / (select sum(book_value) from Accounts a inner join AccountSubclasification asb on 
+	a.clasification_code=asb.acc_subc_id where asb.clasification_id=1)
+	union
+	Select 'Rendimiento sobre el Capital',(select book_value from Accounts where id_account = 24) / (select sum(book_value) from Accounts a inner join AccountSubclasification asb on 
+	a.clasification_code=asb.acc_subc_id where asb.clasification_id=3)
 
+	---Razones financieras del año anterior
+
+	Select * from Accounts
+
+	create procedure SP_razones_del_añoAnterior
+	as
+	Select 'Capital de trabajo' as [Razones Financieras],(select sum(book_value) from Reg_Accounts where id_account = 1 and id_account = 2 and id_account = 3 and id_account = 4 and id_account = 5 and id_account = 6 and id_account = 7) - 
+	(select sum(book_value) 
+	from Reg_Accounts where id_account =14 and id_account = 15 and id_account = 16 and id_account =18 and id_account =19) as [CALCULO]
+	union
+	Select 'Razon Circulante',(select sum(book_value) from Reg_Accounts where id_account = 1 and id_account = 2 and id_account = 3 and id_account = 4 and id_account = 5 and id_account = 6 and id_account = 7) / 
+	(select sum(book_value) 
+	from Reg_Accounts where id_account =14 and id_account = 15 and id_account = 16 and id_account =18 and id_account =19) 
+	union
+	Select 'Razon Rapida',((select sum(book_value) from Reg_Accounts where id_account = 1 and id_account = 2 and id_account = 3 and id_account = 4 and id_account = 5 and id_account = 6 and id_account = 7)
+	 - (select book_value from Reg_Accounts where id_account = 4))  
+	/ (select sum(book_value) 
+	from Reg_Accounts where id_account =14 and id_account = 15 and id_account = 16 and id_account =18 and id_account =19) 
+	union
+	Select 'Rotacion de inventario',(select sum(book_value) from Reg_Accounts where  id_account = 27) / 
+	(select book_value from Reg_Accounts where id_account = 4) 
+	union
+	Select 'Rotacion de inventario en meses',(12 / ((select sum(book_value) from Reg_Accounts where id_account = 27) / 
+	(select book_value from Reg_Accounts where id_account = 4))) 
+	union
+	Select 'Rotacion de inventario en dia',(360 / ((select sum(book_value) from Accounts where id_account = 27) / 
+	(select book_value from Accounts where id_account = 4))) 
+	union
+	Select 'Rotacion de cuentas por cobrar',(select sum(book_value) 
+	from Reg_Accounts where id_account = 25 and id_account = 26) /   
+	(select book_value from Reg_Accounts where id_account = 5) 
+	union
+	Select 'Periodo promedio de cobro',(select book_value from Reg_Accounts where id_account = 5) / (360/(select sum(book_value) 
+	from Reg_Accounts where id_account = 25 and id_account = 26))
+	union
+	Select 'Rotacion de activo fijo',(select sum(book_value) 
+	from Reg_Accounts where id_account = 25 and id_account = 26) /
+	 ((select book_value from Reg_Accounts where id_account = 8)-(select book_value from Reg_Accounts where id_account = 8))--esta resta es por la depreciacion
+	union
+	Select 'Rotacion de activos totales',(select sum(book_value) 
+	from Reg_Accounts where id_account = 25 and id_account = 26) /(select sum(book_value) from Reg_Accounts where id_account = 1 and 
+	id_account =  2 and id_account =3 and id_account = 4 and id_account = 5 and id_account = 6 and id_account = 7 and id_account = 8 
+	and id_account = 9 and id_account = 10 and id_account = 11 and id_account = 12 and id_account = 13 )
+	union
+	Select 'Razon de deuda total',(select sum(book_value) from Reg_Accounts where id_account = 14 and 
+	id_account =  15 and id_account =16 and id_account = 17 and id_account = 18 and id_account = 19 and id_account = 20 and id_account = 21 )
+	/ (select sum(book_value) from Reg_Accounts where id_account = 1 and 
+	id_account =  2 and id_account =3 and id_account = 4 and id_account = 5 and id_account = 6 and id_account = 7 and id_account = 8 
+	and id_account = 9 and id_account = 10 and id_account = 11 and id_account = 12 and id_account = 13 ) 
+	union
+	Select 'Capacidad de pago de intereses',(((Select sum(book_value) from Reg_Accounts where id_account = 25 and id_account=26)-
+	(Select sum(book_value) from Reg_Accounts where id_account=27))-
+	(Select sum(book_value) from Reg_Accounts where id_account = 28 or id_account = 29)) / (select book_value from Reg_Accounts where id_account = 12)
+	union
+	Select 'Razon de pasivo a capital',(Select sum(book_value) from Reg_Accounts where id_account = 20 and id_account = 21) / 
+	(Select sum(book_value) from Reg_Accounts where id_account = 22 and id_account = 23 and id_account = 24) 
+	union
+	Select 'Margen de utilidad bruta',((select sum(book_value) 
+	from Reg_Accounts where id_account = 25 and id_account= 26) -( select book_value from Reg_Accounts where id_account = 27)) / (select sum(book_value) 
+	from Reg_Accounts where id_account = 25 and id_account= 26) 
+	union
+	Select 'Margen de utilidad operativa',(select book_value from Reg_Accounts where id_account = 24) / (select sum(book_value) 
+	from Reg_Accounts where id_account = 25 and id_account= 26)
+	union
+	Select 'Margen de utilidad neta',(select book_value from Reg_Accounts where id_account = 24) / (select sum(book_value) 
+	from Accounts where id_account = 25 and id_account= 26) 
+	union
+	Select 'Rendimiento de los activos',(select book_value from Reg_Accounts where id_account = 24) /  (select sum(book_value) from Reg_Accounts where id_account = 1 and 
+	id_account =  2 and id_account =3 and id_account = 4 and id_account = 5 and id_account = 6 and id_account = 7 and id_account = 8 
+	and id_account = 9 and id_account = 10 and id_account = 11 and id_account = 12 and id_account = 13 ) 
+	union
+	Select 'Rendimiento sobre el Capital',(select book_value from Reg_Accounts where id_account = 24) / (Select sum(book_value) from Reg_Accounts where id_account = 22 
+	and id_account = 23 and id_account = 24)  
+
+	/*----------------------------------------------------------APALANCAMIENTO--------------------------------------------------------------*/
+
+	--Depreciacion del año actual
+
+	Create procedure Apalancamiento
+	@No_acciones int
+	as
+	declare @deprec int;
+	set @deprec=-(select book_value from Accounts where account_name='Depreciacion Act. Fijos');
+	
+	Select'APALANCAMIENTO OPERATIVO',(Select (Select (((SELECT sum(book_value) FROM Accounts a WHERE a.clasification_code=6))
+	- (Select book_value from Reg_Accounts where id_account = 25)) / (Select book_value from Reg_Accounts where id_account = 25)) 
+	/
+	(Select (Select (((SELECT sum(book_value)
+	FROM Accounts a WHERE a.clasification_code=6)-(SELECT sum(book_value)
+	FROM Accounts a WHERE a.clasification_code=7))-((SELECT sum(book_value)
+	FROM Accounts a WHERE a.clasification_code=8 or
+	a.clasification_code=9 or a.clasification_code=11)+@deprec))
+	-
+	(Select (((Select sum(book_value) from Reg_Accounts where id_account = 25 and id_account=26)-
+	(Select sum(book_value) from Reg_Accounts where id_account=27))-
+	(Select sum(book_value) from Reg_Accounts where id_account = 28 or id_account = 29)))
+	/
+	(Select(((Select sum(book_value) from Reg_Accounts where id_account = 25 and id_account=26)-
+	(Select sum(book_value) from Reg_Accounts where id_account=27))-
+	(Select sum(book_value) from Reg_Accounts where id_account = 28 or id_account = 29))))))
+
+	SELECT 'APALANCAMIENTO FINANCIERO',(((((SELECT sum(book_value)
+	FROM Accounts a WHERE a.clasification_code=6)-(SELECT sum(book_value)
+	FROM Accounts a WHERE a.clasification_code=7))-((SELECT sum(book_value)
+	FROM Accounts a WHERE a.clasification_code=8 or
+	a.clasification_code=9 or a.clasification_code=11)+@deprec))-(select sum(book_value) from Accounts 
+	where clasification_code=10 or clasification_code=12))-@No_acciones) / @No_acciones
+
+	Select 'APALANCAMIENTO TOTAL',(SELECT (((((SELECT sum(book_value)
+	FROM Accounts a WHERE a.clasification_code=6)-(SELECT sum(book_value)
+	FROM Accounts a WHERE a.clasification_code=7))-((SELECT sum(book_value)
+	FROM Accounts a WHERE a.clasification_code=8 or
+	a.clasification_code=9 or a.clasification_code=11)+@deprec))-(select sum(book_value) from Accounts 
+	where clasification_code=10 or clasification_code=12))-@No_acciones) / @No_acciones)
+	+
+	(Select (Select (Select (((SELECT sum(book_value) FROM Accounts a WHERE a.clasification_code=6))
+	- (Select book_value from Reg_Accounts where id_account = 25)) / (Select book_value from Reg_Accounts where id_account = 25)) 
+	/
+	(Select (Select (((SELECT sum(book_value)
+	FROM Accounts a WHERE a.clasification_code=6)-(SELECT sum(book_value)
+	FROM Accounts a WHERE a.clasification_code=7))-((SELECT sum(book_value)
+	FROM Accounts a WHERE a.clasification_code=8 or
+	a.clasification_code=9 or a.clasification_code=11)+@deprec))
+	-
+	(Select (((Select sum(book_value) from Reg_Accounts where id_account = 25 and id_account=26)-
+	(Select sum(book_value) from Reg_Accounts where id_account=27))-
+	(Select sum(book_value) from Reg_Accounts where id_account = 28 or id_account = 29)))
+	/
+	(Select(((Select sum(book_value) from Reg_Accounts where id_account = 25 and id_account=26)-
+	(Select sum(book_value) from Reg_Accounts where id_account=27))-
+	(Select sum(book_value) from Reg_Accounts where id_account = 28 or id_account = 29)))))))
 
 /*procedimientos almacenados para flujo de efectivo*/
