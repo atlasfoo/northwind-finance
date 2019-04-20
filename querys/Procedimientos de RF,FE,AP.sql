@@ -22,7 +22,7 @@ update Reg_Accounts set book_value=725000 where id_reg=18;
 update Reg_Accounts set book_value=700000 where id_reg=20;
 update Reg_Accounts set book_value=434818.2918 where id_reg=21;
 --balance del año anterior cuadrado
-exec sp_
+
 
 
 	/*--------------CREACION DE RAZONES FINANCIERAS----------------*/
@@ -175,7 +175,7 @@ exec sp_
 	/*----------------CREACION DEL ESTADO DE FLUJO DE EFECTIVO-------------------------*/
 	Select * from Reg_Accounts
 	Select * from Accounts
-
+/*
 Create procedure sp_fne
 as
 	Select 1,'Banco' as Cuentas,(select a.book_value from Accounts a
@@ -233,7 +233,7 @@ as
 	Select * from Accounts
 	Select * from AccountSubclasification
 	Select * from AccountClasification
-	
+*/	
 	
 CREATE FUNCTION fn_checkif_orap(@id_acc int, @var money, @ck char)
 RETURNS MONEY
@@ -313,16 +313,18 @@ AS BEGIN
 	END
 
 	/*----------------------------------------------------------APALANCAMIENTO--------------------------------------------------------------*/
-	exec sp_Apalancamiento 120
+	exec sp_Apalancamiento 1200
+	exec sp_Estado_Resultados
+	select book_value from Reg_Accounts where id_account=25
 	--Depreciacion del año actual
 
-	Create procedure sp_Apalancamiento
-	@No_acciones int
-	as
+alter procedure sp_Apalancamiento
+@No_acciones int
+as
 	declare @deprec int;
 	set @deprec=-(select book_value from Accounts where account_name='Depreciacion Act. Fijos');
 	
-	Select'APALANCAMIENTO OPERATIVO',(Select (Select (((SELECT sum(book_value) FROM Accounts a WHERE a.clasification_code=6))
+	Select'APALANCAMIENTO OPERATIVO',(Select (Select (((SELECT book_value FROM Accounts a WHERE a.id_account=25))
 	- (Select book_value from Reg_Accounts where id_account = 25)) / (Select book_value from Reg_Accounts where id_account = 25)) 
 	/
 	(Select (Select (((SELECT sum(book_value)
@@ -331,11 +333,11 @@ AS BEGIN
 	FROM Accounts a WHERE a.clasification_code=8 or
 	a.clasification_code=9 or a.clasification_code=11)+@deprec))
 	-
-	(Select (((Select sum(book_value) from Reg_Accounts where id_account = 25 and id_account=26)-
+	(Select (((Select sum(book_value) from Reg_Accounts where id_account = 25 or id_account=26)-
 	(Select sum(book_value) from Reg_Accounts where id_account=27))-
 	(Select sum(book_value) from Reg_Accounts where id_account = 28 or id_account = 29)))
 	/
-	(Select(((Select sum(book_value) from Reg_Accounts where id_account = 25 and id_account=26)-
+	(Select(((Select sum(book_value) from Reg_Accounts where id_account = 25 or id_account=26)-
 	(Select sum(book_value) from Reg_Accounts where id_account=27))-
 	(Select sum(book_value) from Reg_Accounts where id_account = 28 or id_account = 29))))))
 
@@ -362,11 +364,11 @@ AS BEGIN
 	FROM Accounts a WHERE a.clasification_code=8 or
 	a.clasification_code=9 or a.clasification_code=11)+@deprec))
 	-
-	(Select (((Select sum(book_value) from Reg_Accounts where id_account = 25 and id_account=26)-
+	(Select (((Select sum(book_value) from Reg_Accounts where id_account = 25 or id_account=26)-
 	(Select sum(book_value) from Reg_Accounts where id_account=27))-
 	(Select sum(book_value) from Reg_Accounts where id_account = 28 or id_account = 29)))
 	/
-	(Select(((Select sum(book_value) from Reg_Accounts where id_account = 25 and id_account=26)-
+	(Select(((Select sum(book_value) from Reg_Accounts where id_account = 25 or id_account=26)-
 	(Select sum(book_value) from Reg_Accounts where id_account=27))-
 	(Select sum(book_value) from Reg_Accounts where id_account = 28 or id_account = 29)))))))
 
