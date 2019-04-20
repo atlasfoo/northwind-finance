@@ -1,0 +1,44 @@
+C:\Users\mahag\Desktop\northwind-finance\northwind-finance\northwind-finance\obj\Debug\northwind-finance.csprojAssemblyReference.cache
+C:\Users\mahag\Desktop\northwind-finance\northwind-finance\northwind-finance\obj\Debug\northwind_finance.Form1.resources
+C:\Users\mahag\Desktop\northwind-finance\northwind-finance\northwind-finance\obj\Debug\northwind_finance.Properties.Resources.resources
+C:\Users\mahag\Desktop\northwind-finance\northwind-finance\northwind-finance\obj\Debug\Finanzas_Kate.Vista.Apalancamiento_Financiero.resources
+C:\Users\mahag\Desktop\northwind-finance\northwind-finance\northwind-finance\obj\Debug\Finanzas_Kate.Vista.Apalancamiento_Operativo.resources
+C:\Users\mahag\Desktop\northwind-finance\northwind-finance\northwind-finance\obj\Debug\Finanzas_Kate.Vista.Apalancamiento_Total.resources
+C:\Users\mahag\Desktop\northwind-finance\northwind-finance\northwind-finance\obj\Debug\northwind_finance.Vista.Balance_General.resources
+C:\Users\mahag\Desktop\northwind-finance\northwind-finance\northwind-finance\obj\Debug\northwind_finance.Vista.Catalogo.resources
+C:\Users\mahag\Desktop\northwind-finance\northwind-finance\northwind-finance\obj\Debug\northwind_finance.Vista.Estado_OYA.resources
+C:\Users\mahag\Desktop\northwind-finance\northwind-finance\northwind-finance\obj\Debug\northwind_finance.Vista.Estado_Resultados.resources
+C:\Users\mahag\Desktop\northwind-finance\northwind-finance\northwind-finance\obj\Debug\northwind_finance.Vista.FlujoE_Directo.resources
+C:\Users\mahag\Desktop\northwind-finance\northwind-finance\northwind-finance\obj\Debug\northwind_finance.Vista.FlujoE_Indirecto.resources
+C:\Users\mahag\Desktop\northwind-finance\northwind-finance\northwind-finance\obj\Debug\northwind_finance.Vista.Operacion_Compra.resources
+C:\Users\mahag\Desktop\northwind-finance\northwind-finance\northwind-finance\obj\Debug\northwind_finance.Vista.Operacion_Venta.resources
+C:\Users\mahag\Desktop\northwind-finance\northwind-finance\northwind-finance\obj\Debug\northwind_finance.Vista.RFdlg.resources
+C:\Users\mahag\Desktop\northwind-finance\northwind-finance\northwind-finance\obj\Debug\northwind-finance.csproj.GenerateResource.cache
+C:\Users\mahag\Desktop\northwind-finance\northwind-finance\northwind-finance\obj\Debug\northwind-finance.csproj.CoreCompileInputs.cache
+C:\Users\mahag\Desktop\northwind-finance\northwind-finance\northwind-finance\bin\Debug\northwind-finance.exe.config
+C:\Users\mahag\Desktop\northwind-finance\northwind-finance\northwind-finance\bin\Debug\northwind-finance.exe
+C:\Users\mahag\Desktop\northwind-finance\northwind-finance\northwind-finance\bin\Debug\northwind-finance.pdb
+C:\Users\mahag\Desktop\northwind-finance\northwind-finance\northwind-finance\obj\Debug\northwind-finance.exe
+C:\Users\mahag\Desktop\northwind-finance\northwind-finance\northwind-finance\obj\Debug\northwind-finance.pdb
+D:\Repos\Visual Studio Source\northwind-finance\northwind-finance\bin\Debug\northwind-finance.exe.config
+D:\Repos\Visual Studio Source\northwind-finance\northwind-finance\bin\Debug\northwind-finance.exe
+D:\Repos\Visual Studio Source\northwind-finance\northwind-finance\bin\Debug\northwind-finance.pdb
+D:\Repos\Visual Studio Source\northwind-finance\northwind-finance\obj\Debug\northwind-finance.csprojAssemblyReference.cache
+D:\Repos\Visual Studio Source\northwind-finance\northwind-finance\obj\Debug\northwind_finance.Form1.resources
+D:\Repos\Visual Studio Source\northwind-finance\northwind-finance\obj\Debug\northwind_finance.Properties.Resources.resources
+D:\Repos\Visual Studio Source\northwind-finance\northwind-finance\obj\Debug\Finanzas_Kate.Vista.Apalancamiento_Financiero.resources
+D:\Repos\Visual Studio Source\northwind-finance\northwind-finance\obj\Debug\Finanzas_Kate.Vista.Apalancamiento_Operativo.resources
+D:\Repos\Visual Studio Source\northwind-finance\northwind-finance\obj\Debug\Finanzas_Kate.Vista.Apalancamiento_Total.resources
+D:\Repos\Visual Studio Source\northwind-finance\northwind-finance\obj\Debug\northwind_finance.Vista.Balance_General.resources
+D:\Repos\Visual Studio Source\northwind-finance\northwind-finance\obj\Debug\northwind_finance.Vista.Catalogo.resources
+D:\Repos\Visual Studio Source\northwind-finance\northwind-finance\obj\Debug\northwind_finance.Vista.Estado_OYA.resources
+D:\Repos\Visual Studio Source\northwind-finance\northwind-finance\obj\Debug\northwind_finance.Vista.Estado_Resultados.resources
+D:\Repos\Visual Studio Source\northwind-finance\northwind-finance\obj\Debug\northwind_finance.Vista.FlujoE_Directo.resources
+D:\Repos\Visual Studio Source\northwind-finance\northwind-finance\obj\Debug\northwind_finance.Vista.FlujoE_Indirecto.resources
+D:\Repos\Visual Studio Source\northwind-finance\northwind-finance\obj\Debug\northwind_finance.Vista.Operacion_Compra.resources
+D:\Repos\Visual Studio Source\northwind-finance\northwind-finance\obj\Debug\northwind_finance.Vista.Operacion_Venta.resources
+D:\Repos\Visual Studio Source\northwind-finance\northwind-finance\obj\Debug\northwind_finance.Vista.RFdlg.resources
+D:\Repos\Visual Studio Source\northwind-finance\northwind-finance\obj\Debug\northwind-finance.csproj.GenerateResource.cache
+D:\Repos\Visual Studio Source\northwind-finance\northwind-finance\obj\Debug\northwind-finance.csproj.CoreCompileInputs.cache
+D:\Repos\Visual Studio Source\northwind-finance\northwind-finance\obj\Debug\northwind-finance.exe
+D:\Repos\Visual Studio Source\northwind-finance\northwind-finance\obj\Debug\northwind-finance.pdb

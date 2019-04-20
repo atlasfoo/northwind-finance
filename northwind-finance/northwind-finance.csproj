@@ -1,0 +1,227 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{0B7E333D-9060-4B06-BACA-66B6963771B0}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>northwind_finance</RootNamespace>
+    <AssemblyName>northwind-finance</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Form1.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form1.Designer.cs">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Vista\Apalancamiento_Financiero.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Vista\Apalancamiento_Financiero.Designer.cs">
+      <DependentUpon>Apalancamiento_Financiero.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Vista\Apalancamiento_Operativo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Vista\Apalancamiento_Operativo.Designer.cs">
+      <DependentUpon>Apalancamiento_Operativo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Vista\Apalancamiento_Total.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Vista\Apalancamiento_Total.Designer.cs">
+      <DependentUpon>Apalancamiento_Total.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Vista\Balance_General.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Vista\Balance_General.Designer.cs">
+      <DependentUpon>Balance_General.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Vista\Catalogo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Vista\Catalogo.Designer.cs">
+      <DependentUpon>Catalogo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Vista\Estado_OYA.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Vista\Estado_OYA.Designer.cs">
+      <DependentUpon>Estado_OYA.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Vista\Estado_Resultados.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Vista\Estado_Resultados.Designer.cs">
+      <DependentUpon>Estado_Resultados.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Vista\FlujoE_Directo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Vista\FlujoE_Directo.Designer.cs">
+      <DependentUpon>FlujoE_Directo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Vista\FlujoE_Indirecto.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Vista\FlujoE_Indirecto.Designer.cs">
+      <DependentUpon>FlujoE_Indirecto.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Vista\Operacion_Venta.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Vista\Operacion_Venta.Designer.cs">
+      <DependentUpon>Operacion_Venta.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Vista\RFdlg.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Vista\RFdlg.Designer.cs">
+      <DependentUpon>RFdlg.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="Form1.resx">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <EmbeddedResource Include="Vista\Apalancamiento_Financiero.resx">
+      <DependentUpon>Apalancamiento_Financiero.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vista\Apalancamiento_Operativo.resx">
+      <DependentUpon>Apalancamiento_Operativo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vista\Apalancamiento_Total.resx">
+      <DependentUpon>Apalancamiento_Total.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vista\Balance_General.resx">
+      <DependentUpon>Balance_General.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vista\Catalogo.resx">
+      <DependentUpon>Catalogo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vista\Estado_OYA.resx">
+      <DependentUpon>Estado_OYA.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vista\Estado_Resultados.resx">
+      <DependentUpon>Estado_Resultados.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vista\FlujoE_Directo.resx">
+      <DependentUpon>FlujoE_Directo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vista\FlujoE_Indirecto.resx">
+      <DependentUpon>FlujoE_Indirecto.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vista\Operacion_Venta.resx">
+      <DependentUpon>Operacion_Venta.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vista\RFdlg.resx">
+      <DependentUpon>RFdlg.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <None Include="Resources\E.R" />
+    <None Include="Resources\E1.R" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\Apalancamiento...jpg" />
+    <None Include="Resources\Flujo.E1.jpg" />
+    <None Include="Resources\Flujo.E..1.jpg" />
+    <None Include="Resources\Apalancamiento1.jpg" />
+    <None Include="Resources\Apalancamiento.1.jpg" />
+    <None Include="Resources\Apalancamiento..1.jpg" />
+    <Content Include="Resources\Apalancamiento..jpg" />
+    <Content Include="Resources\Apalancamiento.jpg" />
+    <Content Include="Resources\Balance.jpg" />
+    <None Include="Resources\Check..1.jpg" />
+    <None Include="Resources\Razones41.jpg" />
+    <None Include="Resources\Razones31.jpg" />
+    <None Include="Resources\Razones21.jpg" />
+    <None Include="Resources\Razones1.jpg" />
+    <None Include="Resources\E.OyA1.jpg" />
+    <None Include="Resources\Balance1.jpg" />
+    <Content Include="Resources\Catálogo.jpg" />
+    <None Include="Resources\Catálogo1.jpg" />
+    <Content Include="Resources\Cerrar.png" />
+    <Content Include="Resources\Check...jpg" />
+    <Content Include="Resources\coins.png" />
+    <Content Include="Resources\Compra.jpg" />
+    <None Include="Resources\Compra1.jpg" />
+    <Content Include="Resources\Cuadro.jpg" />
+    <Content Include="Resources\E.OyA.jpg" />
+    <None Include="Resources\venta1.jpg" />
+    <None Include="Resources\Finances2.jpg" />
+    <None Include="Resources\Finances.jpg" />
+    <None Include="Resources\Fi.jpg" />
+    <Content Include="Resources\Finanzas...jpg" />
+    <Content Include="Resources\Finanzas.jpg" />
+    <Content Include="Resources\Finanzas1.png" />
+    <Content Include="Resources\Flujo.E...jpg" />
+    <Content Include="Resources\Flujo.E.jpg" />
+    <Content Include="Resources\Punto.png" />
+    <Content Include="Resources\Razones.jpg" />
+    <Content Include="Resources\Razones2.jpg" />
+    <Content Include="Resources\Razones3.jpg" />
+    <Content Include="Resources\Razones4.jpg" />
+    <Content Include="Resources\venta.jpg" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
