@@ -1,16 +1,16 @@
 --restaurar bd luego de hacer git pull para obtener los cambios mas recientes
-restore headeronly from disk='C:\northwind-finance\restore_me.bak';
+restore headeronly from disk='D:\Repos\Visual Studio Source\northwind-finance\restore_me.bak';
 restore filelistonly from disk='C:\northwind-finance\restore_me.bak';
 restore database NorthwindCO from disk='C:\northwind-finance\restore_me.bak'
 with move 'Northwind' to 'C:\Fin_LOG\Northwind.mdf',
 move 'Northwind_log' to 'C:\Fin_LOG\Northwind.ldf',
-replace,file=5;
+replace,file=7;
 
 --por favor añadir nombre y descripcion al hacer respaldo luego de modificar la bd
 backup database NorthwindCO
 to disk='D:\Repos\Visual Studio Source\northwind-finance\restore_me.bak'
-with name='Mejora ventas',
-description='Insercion de venta, actualizacion de cuentas';
+with name='Modelo Finalizado 2.0',
+description='Procedimientos finalizados, proceder con conexiones';
 
 --añadir otro tipo de transacciones a este log, fecha|github_username|descripcion
 /*LOG*/
