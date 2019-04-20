@@ -1,14 +1,33 @@
 
+select * from Reg_Accounts
 Select * from Accounts
 Select * from AccountSubclasification
 Select * from AccountClasification
 Select * from Transactions
-Select * from Reg_Accounts
+Select a.id_account,ra.id_reg, a.account_name, ra.book_value from Reg_Accounts ra inner join Accounts a on a.id_account=ra.id_account
+where a.clasification_code<=5;
+exec sp_Balance_General
+--regaccounts population
+update Reg_Accounts set book_value=(select sum(od.Quantity*od.UnitPrice) from [Order Details] od inner join Orders o
+on od.OrderID=o.OrderID where YEAR(o.OrderDate)=1997) where id_reg=25;
+update Reg_Accounts set book_value=(select sum(od.Quantity*od.UnitPrice*od.Discount) from [Order Details] od inner join Orders o
+on od.OrderID=o.OrderID where YEAR(o.OrderDate)=1997) where id_reg=26;
+update Reg_Accounts set book_value=(select sum(od.Quantity*p.UnitCost) from [Order Details] od inner join Orders o
+on od.OrderID=o.OrderID inner join Products p on p.ProductID=od.ProductID where YEAR(o.OrderDate)=1997) where id_reg=27;
+update Reg_Accounts set book_value=61674.62607 where id_reg=31;
+update Reg_Accounts set book_value=143907.4608 where id_reg=24;
+update Reg_Accounts set book_value=50000 where id_account=4 and yr=1997;
+update Reg_Accounts set book_value=61674.6261 where id_reg=17;
+update Reg_Accounts set book_value=725000 where id_reg=18;
+update Reg_Accounts set book_value=700000 where id_reg=20;
+update Reg_Accounts set book_value=434818.2918 where id_reg=21;
+--balance del año anterior cuadrado
+exec sp_
 
 
 	/*--------------CREACION DE RAZONES FINANCIERAS----------------*/
 
-	create procedure Razones_financieras_del_añoactual
+	create procedure sp_Razones_financieras_del_añoactual
 	as
 	declare @deprec int;
 	set @deprec=-(select book_value from Accounts where account_name='Depreciacion Act. Fijos');
@@ -81,7 +100,7 @@ Select * from Reg_Accounts
 
 	Select * from Accounts
 
-	create procedure SP_razones_del_añoAnterior
+	create procedure sp_razones_del_añoAnterior
 	as
 	Select 'Capital de trabajo' as [Razones Financieras],(select sum(book_value) from Reg_Accounts where id_account = 1 and id_account = 2 and id_account = 3 and id_account = 4 and id_account = 5 and id_account = 6 and id_account = 7) - 
 	(select sum(book_value) 
@@ -157,8 +176,8 @@ Select * from Reg_Accounts
 	Select * from Reg_Accounts
 	Select * from Accounts
 
-	Create procedure flujo_neto_efectivo_origen_aplicacion_variacion
-	as
+Create procedure sp_fne
+as
 	Select 1,'Banco' as Cuentas,(select a.book_value from Accounts a
 	inner join Reg_Accounts r
 	on r.id_account = a.id_account where a.id_account = 1 and clasification_code = 1) as [Año Actual],(Select book_value from Reg_Accounts where id_account = 1) as [Año Anterior],((select a.book_value from Accounts a
@@ -294,23 +313,23 @@ AS BEGIN
 	END
 
 	/*----------------------------------------------------------APALANCAMIENTO--------------------------------------------------------------*/
-
+	exec sp_Apalancamiento 120
 	--Depreciacion del año actual
 
-	Create procedure Apalancamiento
+	Create procedure sp_Apalancamiento
 	@No_acciones int
 	as
 	declare @deprec int;
 	set @deprec=-(select book_value from Accounts where account_name='Depreciacion Act. Fijos');
 	
-	Select'APALANCAMIENTO OPERATIVO',(Select (Select (((SELECT sum(book_value) FROM Accounts a WHERE a.clasification_code=6))
+	Select'APALANCAMIENTO OPERATIVO',(((SELECT sum(book_value) FROM Accounts a WHERE a.clasification_code=6))
 	- (Select book_value from Reg_Accounts where id_account = 25)) / (Select book_value from Reg_Accounts where id_account = 25)) 
 	/
 	(Select (Select (((SELECT sum(book_value)
 	FROM Accounts a WHERE a.clasification_code=6)-(SELECT sum(book_value)
 	FROM Accounts a WHERE a.clasification_code=7))-((SELECT sum(book_value)
 	FROM Accounts a WHERE a.clasification_code=8 or
-	a.clasification_code=9 or a.clasification_code=11)+@deprec))
+	a.clasification_code=9 or a.clasification_code=11)/*@deprec)*/)
 	-
 	(Select (((Select sum(book_value) from Reg_Accounts where id_account = 25 and id_account=26)-
 	(Select sum(book_value) from Reg_Accounts where id_account=27))-
