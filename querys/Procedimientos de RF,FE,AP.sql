@@ -322,14 +322,14 @@ AS BEGIN
 	declare @deprec int;
 	set @deprec=-(select book_value from Accounts where account_name='Depreciacion Act. Fijos');
 	
-	Select'APALANCAMIENTO OPERATIVO',(((SELECT sum(book_value) FROM Accounts a WHERE a.clasification_code=6))
+	Select'APALANCAMIENTO OPERATIVO',(Select (Select (((SELECT sum(book_value) FROM Accounts a WHERE a.clasification_code=6))
 	- (Select book_value from Reg_Accounts where id_account = 25)) / (Select book_value from Reg_Accounts where id_account = 25)) 
 	/
 	(Select (Select (((SELECT sum(book_value)
 	FROM Accounts a WHERE a.clasification_code=6)-(SELECT sum(book_value)
 	FROM Accounts a WHERE a.clasification_code=7))-((SELECT sum(book_value)
 	FROM Accounts a WHERE a.clasification_code=8 or
-	a.clasification_code=9 or a.clasification_code=11)/*@deprec)*/)
+	a.clasification_code=9 or a.clasification_code=11)+@deprec))
 	-
 	(Select (((Select sum(book_value) from Reg_Accounts where id_account = 25 and id_account=26)-
 	(Select sum(book_value) from Reg_Accounts where id_account=27))-
