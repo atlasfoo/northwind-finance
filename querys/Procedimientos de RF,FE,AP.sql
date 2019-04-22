@@ -248,7 +248,7 @@ as
 	declare @deprec int;
 	set @deprec=-(select book_value from Accounts where account_name='Depreciacion Act. Fijos');
 	
-	Select'APALANCAMIENTO OPERATIVO',(Select (Select (((SELECT book_value FROM Accounts a WHERE a.id_account=25))
+	Select'APALANCAMIENTO OPERATIVO' as Apalancamiento,(Select (Select (((SELECT book_value FROM Accounts a WHERE a.id_account=25))
 	- (Select book_value from Reg_Accounts where id_account = 25)) / (Select book_value from Reg_Accounts where id_account = 25)) 
 	/
 	(Select (Select (((SELECT sum(book_value)
@@ -264,14 +264,15 @@ as
 	(Select(((Select sum(book_value) from Reg_Accounts where id_account = 25 or id_account=26)-
 	(Select sum(book_value) from Reg_Accounts where id_account=27))-
 	(Select sum(book_value) from Reg_Accounts where id_account = 28 or id_account = 29))))))
-
+	as Valor
+	UNION
 	SELECT 'APALANCAMIENTO FINANCIERO',(((((SELECT sum(book_value)
 	FROM Accounts a WHERE a.clasification_code=6)-(SELECT sum(book_value)
 	FROM Accounts a WHERE a.clasification_code=7))-((SELECT sum(book_value)
 	FROM Accounts a WHERE a.clasification_code=8 or
 	a.clasification_code=9 or a.clasification_code=11)+@deprec))-(select sum(book_value) from Accounts 
 	where clasification_code=10 or clasification_code=12))-@No_acciones) / @No_acciones
-
+	UNION
 	Select 'APALANCAMIENTO TOTAL',(SELECT (((((SELECT sum(book_value)
 	FROM Accounts a WHERE a.clasification_code=6)-(SELECT sum(book_value)
 	FROM Accounts a WHERE a.clasification_code=7))-((SELECT sum(book_value)

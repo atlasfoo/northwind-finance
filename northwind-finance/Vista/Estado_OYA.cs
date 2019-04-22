@@ -25,7 +25,8 @@ namespace northwind_finance.Vista
 
         private void Estado_OYA_Load(object sender, EventArgs e)
         {
-
+            dataOYA.DataSource = NOrigen_aplicacion.OYA();
+            dataOYA.Columns[0].Visible = false;
         }
     }
 }

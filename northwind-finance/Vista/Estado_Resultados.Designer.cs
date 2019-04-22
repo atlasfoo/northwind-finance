@@ -28,18 +28,31 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.dataER = new System.Windows.Forms.DataGridView();
             ((System.ComponentModel.ISupportInitialize)(this.dataER)).BeginInit();
             this.SuspendLayout();
             // 
             // dataER
             // 
-            this.dataER.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataER.AllowUserToAddRows = false;
+            this.dataER.AllowUserToDeleteRows = false;
+            this.dataER.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataER.DefaultCellStyle = dataGridViewCellStyle1;
             this.dataER.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataER.Location = new System.Drawing.Point(0, 0);
             this.dataER.Name = "dataER";
+            this.dataER.ReadOnly = true;
             this.dataER.Size = new System.Drawing.Size(697, 493);
             this.dataER.TabIndex = 0;
+            this.dataER.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataER_CellContentClick);
             // 
             // Estado_Resultados
             // 
@@ -47,9 +60,10 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(697, 493);
             this.Controls.Add(this.dataER);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "Estado_Resultados";
             this.Text = "Estado de resultados";
+            this.Load += new System.EventHandler(this.Estado_Resultados_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataER)).EndInit();
             this.ResumeLayout(false);
 

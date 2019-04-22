@@ -26,8 +26,6 @@ D:\Repos\Visual Studio Source\northwind-finance\northwind-finance\bin\Debug\nort
 D:\Repos\Visual Studio Source\northwind-finance\northwind-finance\obj\Debug\northwind-finance.csprojAssemblyReference.cache
 D:\Repos\Visual Studio Source\northwind-finance\northwind-finance\obj\Debug\northwind_finance.Form1.resources
 D:\Repos\Visual Studio Source\northwind-finance\northwind-finance\obj\Debug\northwind_finance.Properties.Resources.resources
-D:\Repos\Visual Studio Source\northwind-finance\northwind-finance\obj\Debug\Finanzas_Kate.Vista.Apalancamiento_Financiero.resources
-D:\Repos\Visual Studio Source\northwind-finance\northwind-finance\obj\Debug\Finanzas_Kate.Vista.Apalancamiento_Operativo.resources
 D:\Repos\Visual Studio Source\northwind-finance\northwind-finance\obj\Debug\Finanzas_Kate.Vista.Apalancamiento_Total.resources
 D:\Repos\Visual Studio Source\northwind-finance\northwind-finance\obj\Debug\northwind_finance.Vista.Balance_General.resources
 D:\Repos\Visual Studio Source\northwind-finance\northwind-finance\obj\Debug\northwind_finance.Vista.Catalogo.resources
@@ -35,7 +33,6 @@ D:\Repos\Visual Studio Source\northwind-finance\northwind-finance\obj\Debug\nort
 D:\Repos\Visual Studio Source\northwind-finance\northwind-finance\obj\Debug\northwind_finance.Vista.Estado_Resultados.resources
 D:\Repos\Visual Studio Source\northwind-finance\northwind-finance\obj\Debug\northwind_finance.Vista.FlujoE_Directo.resources
 D:\Repos\Visual Studio Source\northwind-finance\northwind-finance\obj\Debug\northwind_finance.Vista.FlujoE_Indirecto.resources
-D:\Repos\Visual Studio Source\northwind-finance\northwind-finance\obj\Debug\northwind_finance.Vista.Operacion_Compra.resources
 D:\Repos\Visual Studio Source\northwind-finance\northwind-finance\obj\Debug\northwind_finance.Vista.Operacion_Venta.resources
 D:\Repos\Visual Studio Source\northwind-finance\northwind-finance\obj\Debug\northwind_finance.Vista.RFdlg.resources
 D:\Repos\Visual Studio Source\northwind-finance\northwind-finance\obj\Debug\northwind-finance.csproj.GenerateResource.cache

@@ -31,8 +31,6 @@
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.agregarVentaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.catálogoDeCuentasToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.mostrarCatálogoDeCuentasToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.estadosFinancierosToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.balanceGeneralToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.estadoDeResultadosToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -61,8 +59,6 @@
             this.margenDeUtilidadOperativaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.margenDeUtilidadNetaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.apalancamientoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.operativoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.financieroToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.totalToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.flujosDeEfectivoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mostraToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -97,27 +93,8 @@
             this.agregarVentaToolStripMenuItem.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.agregarVentaToolStripMenuItem.Image = global::northwind_finance.Properties.Resources.venta;
             this.agregarVentaToolStripMenuItem.Name = "agregarVentaToolStripMenuItem";
-            this.agregarVentaToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.agregarVentaToolStripMenuItem.Size = new System.Drawing.Size(156, 22);
             this.agregarVentaToolStripMenuItem.Text = "Agregar venta";
-            // 
-            // catálogoDeCuentasToolStripMenuItem
-            // 
-            this.catálogoDeCuentasToolStripMenuItem.BackColor = System.Drawing.SystemColors.ButtonShadow;
-            this.catálogoDeCuentasToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.mostrarCatálogoDeCuentasToolStripMenuItem});
-            this.catálogoDeCuentasToolStripMenuItem.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.catálogoDeCuentasToolStripMenuItem.ForeColor = System.Drawing.Color.Black;
-            this.catálogoDeCuentasToolStripMenuItem.Name = "catálogoDeCuentasToolStripMenuItem";
-            this.catálogoDeCuentasToolStripMenuItem.Size = new System.Drawing.Size(150, 20);
-            this.catálogoDeCuentasToolStripMenuItem.Text = "Catálogo de cuentas";
-            // 
-            // mostrarCatálogoDeCuentasToolStripMenuItem
-            // 
-            this.mostrarCatálogoDeCuentasToolStripMenuItem.Font = new System.Drawing.Font("Sitka Text", 9.749999F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.mostrarCatálogoDeCuentasToolStripMenuItem.Image = global::northwind_finance.Properties.Resources.Catálogo;
-            this.mostrarCatálogoDeCuentasToolStripMenuItem.Name = "mostrarCatálogoDeCuentasToolStripMenuItem";
-            this.mostrarCatálogoDeCuentasToolStripMenuItem.Size = new System.Drawing.Size(249, 24);
-            this.mostrarCatálogoDeCuentasToolStripMenuItem.Text = "Mostrar catálogo de cuentas";
             // 
             // estadosFinancierosToolStripMenuItem
             // 
@@ -138,6 +115,7 @@
             this.balanceGeneralToolStripMenuItem.Name = "balanceGeneralToolStripMenuItem";
             this.balanceGeneralToolStripMenuItem.Size = new System.Drawing.Size(204, 24);
             this.balanceGeneralToolStripMenuItem.Text = "Balance general";
+            this.balanceGeneralToolStripMenuItem.Click += new System.EventHandler(this.balanceGeneralToolStripMenuItem_Click);
             // 
             // estadoDeResultadosToolStripMenuItem
             // 
@@ -146,6 +124,7 @@
             this.estadoDeResultadosToolStripMenuItem.Name = "estadoDeResultadosToolStripMenuItem";
             this.estadoDeResultadosToolStripMenuItem.Size = new System.Drawing.Size(204, 24);
             this.estadoDeResultadosToolStripMenuItem.Text = "Estado de resultados";
+            this.estadoDeResultadosToolStripMenuItem.Click += new System.EventHandler(this.estadoDeResultadosToolStripMenuItem_Click);
             // 
             // estadoDeOrigenYAplicaciónToolStripMenuItem
             // 
@@ -164,6 +143,7 @@
             this.mostrarEstadoDeOrigenYAplicaciónToolStripMenuItem.Name = "mostrarEstadoDeOrigenYAplicaciónToolStripMenuItem";
             this.mostrarEstadoDeOrigenYAplicaciónToolStripMenuItem.Size = new System.Drawing.Size(307, 24);
             this.mostrarEstadoDeOrigenYAplicaciónToolStripMenuItem.Text = "Mostrar estado de origen y aplicación";
+            this.mostrarEstadoDeOrigenYAplicaciónToolStripMenuItem.Click += new System.EventHandler(this.mostrarEstadoDeOrigenYAplicaciónToolStripMenuItem_Click);
             // 
             // razonesFinancierasToolStripMenuItem
             // 
@@ -361,8 +341,6 @@
             // apalancamientoToolStripMenuItem
             // 
             this.apalancamientoToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.operativoToolStripMenuItem,
-            this.financieroToolStripMenuItem,
             this.totalToolStripMenuItem});
             this.apalancamientoToolStripMenuItem.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.apalancamientoToolStripMenuItem.ForeColor = System.Drawing.Color.Black;
@@ -370,29 +348,14 @@
             this.apalancamientoToolStripMenuItem.Size = new System.Drawing.Size(119, 20);
             this.apalancamientoToolStripMenuItem.Text = "Apalancamiento";
             // 
-            // operativoToolStripMenuItem
-            // 
-            this.operativoToolStripMenuItem.Font = new System.Drawing.Font("Sitka Text", 9.749999F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.operativoToolStripMenuItem.Image = global::northwind_finance.Properties.Resources.Apalancamiento__;
-            this.operativoToolStripMenuItem.Name = "operativoToolStripMenuItem";
-            this.operativoToolStripMenuItem.Size = new System.Drawing.Size(180, 24);
-            this.operativoToolStripMenuItem.Text = "Operativo";
-            // 
-            // financieroToolStripMenuItem
-            // 
-            this.financieroToolStripMenuItem.Font = new System.Drawing.Font("Sitka Text", 9.749999F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.financieroToolStripMenuItem.Image = global::northwind_finance.Properties.Resources.Apalancamiento_;
-            this.financieroToolStripMenuItem.Name = "financieroToolStripMenuItem";
-            this.financieroToolStripMenuItem.Size = new System.Drawing.Size(180, 24);
-            this.financieroToolStripMenuItem.Text = "Financiero";
-            // 
             // totalToolStripMenuItem
             // 
             this.totalToolStripMenuItem.Font = new System.Drawing.Font("Sitka Text", 9.749999F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.totalToolStripMenuItem.Image = global::northwind_finance.Properties.Resources.Apalancamiento;
             this.totalToolStripMenuItem.Name = "totalToolStripMenuItem";
             this.totalToolStripMenuItem.Size = new System.Drawing.Size(180, 24);
-            this.totalToolStripMenuItem.Text = "Total";
+            this.totalToolStripMenuItem.Text = "Todos";
+            this.totalToolStripMenuItem.Click += new System.EventHandler(this.totalToolStripMenuItem_Click);
             // 
             // flujosDeEfectivoToolStripMenuItem
             // 
@@ -409,15 +372,15 @@
             this.mostraToolStripMenuItem.Font = new System.Drawing.Font("Sitka Text", 9.749999F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.mostraToolStripMenuItem.Image = global::northwind_finance.Properties.Resources.Flujo_E__;
             this.mostraToolStripMenuItem.Name = "mostraToolStripMenuItem";
-            this.mostraToolStripMenuItem.Size = new System.Drawing.Size(132, 24);
+            this.mostraToolStripMenuItem.Size = new System.Drawing.Size(180, 24);
             this.mostraToolStripMenuItem.Text = "Directo";
+            this.mostraToolStripMenuItem.Click += new System.EventHandler(this.mostraToolStripMenuItem_Click);
             // 
             // menuStrip1
             // 
             this.menuStrip1.BackColor = System.Drawing.SystemColors.ButtonShadow;
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripMenuItem1,
-            this.catálogoDeCuentasToolStripMenuItem,
             this.estadosFinancierosToolStripMenuItem,
             this.estadoDeOrigenYAplicaciónToolStripMenuItem,
             this.razonesFinancierasToolStripMenuItem,
@@ -440,6 +403,7 @@
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox1.TabIndex = 2;
             this.pictureBox1.TabStop = false;
+            this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
             // 
             // Form1
             // 
@@ -471,8 +435,6 @@
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem agregarVentaToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem catálogoDeCuentasToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem mostrarCatálogoDeCuentasToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem estadosFinancierosToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem balanceGeneralToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem estadoDeResultadosToolStripMenuItem;
@@ -501,8 +463,6 @@
         private System.Windows.Forms.ToolStripMenuItem margenDeUtilidadOperativaToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem margenDeUtilidadNetaToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem apalancamientoToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem operativoToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem financieroToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem totalToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem flujosDeEfectivoToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem mostraToolStripMenuItem;

@@ -21,6 +21,17 @@ namespace northwind_finance.Vista
         private void Mostrar()
         {
             this.dataER.DataSource = NEstado_Resultado.ER();
+            dataER.Columns[0].Visible = false;
+        }
+
+        private void dataER_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void Estado_Resultados_Load(object sender, EventArgs e)
+        {
+            Mostrar();
         }
     }
 }

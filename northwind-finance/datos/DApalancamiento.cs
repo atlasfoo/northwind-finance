@@ -23,14 +23,14 @@ namespace northwind_finance.datos
                 SqlCmd.CommandText = "sp_Apalancamiento";
                 SqlCmd.CommandType = CommandType.StoredProcedure;
 
-                SqlDataAdapter SqlDat = new SqlDataAdapter(SqlCmd);
-                SqlDat.Fill(dataApal);
-
                 SqlParameter ParDato1 = new SqlParameter();
                 ParDato1.ParameterName = "@No_acciones";
                 ParDato1.SqlDbType = SqlDbType.Int;
                 ParDato1.Value = noAcciones;
                 SqlCmd.Parameters.Add(ParDato1);
+
+                SqlDataAdapter SqlDat = new SqlDataAdapter(SqlCmd);
+                SqlDat.Fill(dataApal);
 
             }
             catch (Exception ex)

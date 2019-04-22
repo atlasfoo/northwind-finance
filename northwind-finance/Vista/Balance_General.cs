@@ -21,7 +21,12 @@ namespace northwind_finance.Vista
         private void Mostrar()
         {
             this.dataBD.DataSource = NBalance_General.BG();
+            dataBD.Columns[0].Visible = false;
         }
 
+        private void Balance_General_Load(object sender, EventArgs e)
+        {
+            Mostrar();
+        }
     }
 }
