@@ -16,5 +16,10 @@ namespace Finanzas_Kate.Vista
         {
             InitializeComponent();
         }
+
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
     }
 }

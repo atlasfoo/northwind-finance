@@ -28,34 +28,69 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            this.dataApal = new System.Windows.Forms.DataGridView();
+            this.label1 = new System.Windows.Forms.Label();
+            this.txtacciones = new System.Windows.Forms.TextBox();
+            this.btnacciones = new System.Windows.Forms.Button();
+            ((System.ComponentModel.ISupportInitialize)(this.dataApal)).BeginInit();
             this.SuspendLayout();
             // 
-            // dataGridView1
+            // dataApal
             // 
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataGridView1.Location = new System.Drawing.Point(0, 0);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(697, 493);
-            this.dataGridView1.TabIndex = 0;
+            this.dataApal.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataApal.Location = new System.Drawing.Point(189, 0);
+            this.dataApal.Name = "dataApal";
+            this.dataApal.Size = new System.Drawing.Size(508, 493);
+            this.dataApal.TabIndex = 0;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(50, 54);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(86, 13);
+            this.label1.TabIndex = 1;
+            this.label1.Text = "No de Acciones:";
+            // 
+            // txtacciones
+            // 
+            this.txtacciones.Location = new System.Drawing.Point(45, 82);
+            this.txtacciones.Name = "txtacciones";
+            this.txtacciones.Size = new System.Drawing.Size(100, 20);
+            this.txtacciones.TabIndex = 2;
+            // 
+            // btnacciones
+            // 
+            this.btnacciones.Location = new System.Drawing.Point(58, 136);
+            this.btnacciones.Name = "btnacciones";
+            this.btnacciones.Size = new System.Drawing.Size(75, 23);
+            this.btnacciones.TabIndex = 3;
+            this.btnacciones.Text = "Visualizar";
+            this.btnacciones.UseVisualStyleBackColor = true;
+            this.btnacciones.Click += new System.EventHandler(this.btnacciones_Click);
             // 
             // Apalancamiento_Total
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(697, 493);
-            this.Controls.Add(this.dataGridView1);
+            this.Controls.Add(this.btnacciones);
+            this.Controls.Add(this.txtacciones);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.dataApal);
             this.Name = "Apalancamiento_Total";
             this.Text = "Apalancamiento total";
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataApal)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
         #endregion
 
-        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.DataGridView dataApal;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TextBox txtacciones;
+        private System.Windows.Forms.Button btnacciones;
     }
 }

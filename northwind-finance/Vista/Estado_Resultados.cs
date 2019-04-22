@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using northwind_finance.Negocio;
 
 namespace northwind_finance.Vista
 {
@@ -15,6 +16,11 @@ namespace northwind_finance.Vista
         public Estado_Resultados()
         {
             InitializeComponent();
+        }
+
+        private void Mostrar()
+        {
+            this.dataER.DataSource = NEstado_Resultado.ER();
         }
     }
 }

@@ -28,34 +28,35 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            this.dataOYA = new System.Windows.Forms.DataGridView();
+            ((System.ComponentModel.ISupportInitialize)(this.dataOYA)).BeginInit();
             this.SuspendLayout();
             // 
-            // dataGridView1
+            // dataOYA
             // 
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataGridView1.Location = new System.Drawing.Point(0, 0);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(697, 493);
-            this.dataGridView1.TabIndex = 0;
+            this.dataOYA.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataOYA.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dataOYA.Location = new System.Drawing.Point(0, 0);
+            this.dataOYA.Name = "dataOYA";
+            this.dataOYA.Size = new System.Drawing.Size(697, 493);
+            this.dataOYA.TabIndex = 0;
             // 
             // Estado_OYA
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(697, 493);
-            this.Controls.Add(this.dataGridView1);
+            this.Controls.Add(this.dataOYA);
             this.Name = "Estado_OYA";
             this.Text = "Estado de origen y aplicación de fondos";
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            this.Load += new System.EventHandler(this.Estado_OYA_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.dataOYA)).EndInit();
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.DataGridView dataOYA;
     }
 }

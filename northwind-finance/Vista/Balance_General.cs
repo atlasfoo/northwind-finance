@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using northwind_finance.Negocio;
 
 namespace northwind_finance.Vista
 {
@@ -16,5 +17,11 @@ namespace northwind_finance.Vista
         {
             InitializeComponent();
         }
+
+        private void Mostrar()
+        {
+            this.dataBD.DataSource = NBalance_General.BG();
+        }
+
     }
 }
