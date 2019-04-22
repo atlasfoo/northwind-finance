@@ -76,5 +76,11 @@ namespace northwind_finance
             FlujoE_Directo dlg = new FlujoE_Directo();
             dlg.ShowDialog();
         }
+
+        private void agregarVentaToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Operacion_Venta dlg = new Operacion_Venta();
+            dlg.ShowDialog();
+        }
     }
 }

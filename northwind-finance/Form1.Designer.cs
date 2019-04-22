@@ -93,8 +93,9 @@
             this.agregarVentaToolStripMenuItem.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.agregarVentaToolStripMenuItem.Image = global::northwind_finance.Properties.Resources.venta;
             this.agregarVentaToolStripMenuItem.Name = "agregarVentaToolStripMenuItem";
-            this.agregarVentaToolStripMenuItem.Size = new System.Drawing.Size(156, 22);
+            this.agregarVentaToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.agregarVentaToolStripMenuItem.Text = "Agregar venta";
+            this.agregarVentaToolStripMenuItem.Click += new System.EventHandler(this.agregarVentaToolStripMenuItem_Click);
             // 
             // estadosFinancierosToolStripMenuItem
             // 
@@ -353,7 +354,7 @@
             this.totalToolStripMenuItem.Font = new System.Drawing.Font("Sitka Text", 9.749999F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.totalToolStripMenuItem.Image = global::northwind_finance.Properties.Resources.Apalancamiento;
             this.totalToolStripMenuItem.Name = "totalToolStripMenuItem";
-            this.totalToolStripMenuItem.Size = new System.Drawing.Size(180, 24);
+            this.totalToolStripMenuItem.Size = new System.Drawing.Size(111, 24);
             this.totalToolStripMenuItem.Text = "Todos";
             this.totalToolStripMenuItem.Click += new System.EventHandler(this.totalToolStripMenuItem_Click);
             // 
@@ -372,7 +373,7 @@
             this.mostraToolStripMenuItem.Font = new System.Drawing.Font("Sitka Text", 9.749999F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.mostraToolStripMenuItem.Image = global::northwind_finance.Properties.Resources.Flujo_E__;
             this.mostraToolStripMenuItem.Name = "mostraToolStripMenuItem";
-            this.mostraToolStripMenuItem.Size = new System.Drawing.Size(180, 24);
+            this.mostraToolStripMenuItem.Size = new System.Drawing.Size(120, 24);
             this.mostraToolStripMenuItem.Text = "Directo";
             this.mostraToolStripMenuItem.Click += new System.EventHandler(this.mostraToolStripMenuItem_Click);
             // 

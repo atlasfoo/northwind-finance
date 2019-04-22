@@ -469,12 +469,25 @@ select * from Products;
 exec sp_add_vta 10808, 1, 5, 0;
 
 
-CREATE PROC sp_add_vta
+ALTER PROC sp_add_vta
 @ord_id int, @prod_id int, @qty int, @disc float
 AS
-	declare @unt_pr int;
+	declare @unt_pr int, @dqty int;
+	select @dqty=UnitsInStock from Products where ProductID=@prod_id;
 	set @unt_pr=(select UnitPrice from Products where ProductID=@prod_id);
-	INSERT INTO [Order Details] values(@ord_id, @prod_id, @unt_pr, @qty, @disc);
+	if(@qty>@dqty)
+	begin
+		SELECT 'ERROR: CANTIDAD SUPERIOR A LO DISPONIBLE';
+	end
+	else
+	begin	
+		INSERT INTO [Order Details] values(@ord_id, @prod_id, @unt_pr, @qty, @disc);
+		SELECT 'VENTA AGREGADA CON EXITO';
+	end
+exec sp_showOrders
+exec sp_showProducts
+
+
 
 CREATE TRIGGER tr_add_vta
 ON [Order Details]
